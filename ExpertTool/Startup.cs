@@ -43,6 +43,9 @@ namespace ExpertTool
 
             app.UseStaticFiles();
 
+            //app.UseAuth();
+
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
