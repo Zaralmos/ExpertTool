@@ -8,19 +8,8 @@ namespace ExpertTool.Models
     /// <summary>
     /// Представляет класс админа.
     /// </summary>
-    public class Admin
+    public class Admin : User
     {
-        public int Id { get; set; }
-
-        public string Name { get; set; }
-
-        public DateTime Birthday { get; set; }
-
-        /// <summary>
-        /// Должность и место работы админа.
-        /// </summary>
-        public string Position { get; set; }
-
         /// <summary>
         /// Персоны, вынесенные на рассмотрение экспертов данным админом.
         /// </summary>
