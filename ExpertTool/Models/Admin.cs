@@ -21,6 +21,14 @@ namespace ExpertTool.Models
         /// </summary>
         public string Position { get; set; }
 
+        /// <summary>
+        /// Персоны, вынесенные на рассмотрение экспертов данным админом.
+        /// </summary>
         public virtual ICollection<Person> People { get; set; } = new List<Person>();
+
+        /// <summary>
+        /// Список экспертов, зарегистрированных данным админом.
+        /// </summary>
+        public virtual ICollection<Expert> Experts { get; set; } = new List<Expert>();
     }
 }
