@@ -12,10 +12,13 @@ namespace ExpertTool.Models
     {
         public int Id { get; set; }
 
-        string Name { get; set; }
+        public string Name { get; set; }
 
         public DateTime Birthday { get; set; }
 
+        /// <summary>
+        /// Должность персоны.
+        /// </summary>
         public string Position { get; set; }
 
         public string Biography { get; set; }
@@ -23,6 +26,6 @@ namespace ExpertTool.Models
         public int AdminId { get; set; }
         public virtual Admin Admin { get; set; }
 
-        public virtual ICollection<Evaluation> Evaluations { get; set; } = new List<Evaluation>();
+        public virtual ICollection<Conclusion> Conclusions { get; set; } = new List<Conclusion>();
     }
 }

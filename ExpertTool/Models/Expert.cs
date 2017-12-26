@@ -12,10 +12,13 @@ namespace ExpertTool.Models
     {
         public int Id { get; set; }
 
-        string Name { get; set; }
+        public string Name { get; set; }
 
         public DateTime Birthday { get; set; }
 
+        /// <summary>
+        /// Должность и место работы эксперта.
+        /// </summary>
         public string Position { get; set; }
 
         public string Email { get; set; }
@@ -23,9 +26,9 @@ namespace ExpertTool.Models
         public string Phone { get; set; }
 
         /// <summary>
-        /// Оценка, выставленная экспертом.
+        /// Оценки, выставленная экспертом.
         /// </summary>
-        public virtual ICollection<Person> Evaluations { get; set; } = new List<Person>();
+        public virtual ICollection<Conclusion> Conclusions { get; set; } = new List<Conclusion>();
 
         /// <summary>
         /// Id админа, зарешистрировавшего данного эксперта.

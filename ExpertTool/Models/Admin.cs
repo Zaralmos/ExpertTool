@@ -12,10 +12,13 @@ namespace ExpertTool.Models
     {
         public int Id { get; set; }
 
-        string Name { get; set; }
+        public string Name { get; set; }
 
         public DateTime Birthday { get; set; }
 
+        /// <summary>
+        /// Должность и место работы админа.
+        /// </summary>
         public string Position { get; set; }
 
         public virtual ICollection<Person> People { get; set; } = new List<Person>();
