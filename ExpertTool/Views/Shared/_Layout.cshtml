@@ -2,59 +2,94 @@
 <html>
 <head>
     <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="css/master-page.css">
+    <link rel="stylesheet" type="text/css" href="css/home.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ExpertTool</title>
 
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="shortcut icon" href="~/img/icon.png" type="image/png">
+        <link rel="stylesheet" href="~/css/expert-index.css" />
+        <link rel="stylesheet" href="~/css/master-page.css" />
     </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
+    @*<environment exclude="Development">
+            <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+                  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+                  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+            <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        </environment>*@
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Экспертный инструмент</a>
+    <div id="page-wrapper">
+        <!-- header -->
+        <header>
+            <div class="container">
+                <nav id="menu-main">
+                    <ul>
+                        <li>
+                            <a href=""> Главная </a>
+                        </li>
+                        <li>
+                            <a href=""> О проекте </a>
+                        </li>
+                        <li>
+                            <a href=""> Помощь </a>
+                        </li>
+                        <li>
+                            <a href=""> Кабинет </a>
+                        </li>
+                        <!-- <a id="logo" href="https://www.youtube.com/results?search_query=Inessa+Kozhurina">
+                            <img src="img/logo.png" alt="mount logo">
+                        </a> -->
+                    </ul>
+                    <dic class="clear"></dic>
+                </nav>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Главная</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">О проекте</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Помощь</a></li>
-                    @if (ViewBag.User is Admin)
-                    {
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Кабинет Админа</a></li>
-                    }
-                    else if (ViewBag.User is Expert)
-                    {
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Кабинет Эксперта</a></li>
-                    }
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div class="container body-content">
-        <hr />
+        </header>
 
+        <!-- content -->
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; Expert Tool by Batin & Solovev 2017</p>
-        </footer>
-    </div>
 
+        <!-- footer -->
+        <div class="container">
+            <footer id="contacts">
+                <b>Экспертный интсрумент</b> <br>
+                <!-- <div id="media">
+                    <ul >
+                            <li>
+                                <a href="https://vk.com/almosvirog">
+                                    <img src="img/media/vk.png" alt="Sergei Solovev vk.com">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.facebook.com/AlmosVirog">
+                                        <img src="img/media/facebook.png" alt="Sergei Solovev facebook">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.youtube.com/channel/UCELR_2tIEJQJpCmEVcU5MvA?view_as=subscriber">
+                                    <img src="img/media/youtube.png" alt="Sergei Solovev youtube">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.instagram.com/almosvirog/">
+                                        <img src="img/media/instagram.png" alt="Sergei Solovev instagram">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://ru.pinterest.com/almosvirog/">
+                                    <img src="img/media/pinterest.png" alt="Sergei Solovev pinterest">
+                                </a>
+                            </li>
+                        </ul>
+                    </div> -->
+                E-mail: for.example@email.com <br>
+                Телефон: 8 (912) 012-00-12<br>
+                <div id="signature">&copy; Web-site by Batin & Solovev 2017</div>
+
+            </footer>
+        </div>
+    </div>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
