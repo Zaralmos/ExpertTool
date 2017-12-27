@@ -10,6 +10,9 @@ namespace ExpertTool.Models
     {
         public int Id { get; set; }
 
+        /// <summary>
+        /// Полное имя пользователя.
+        /// </summary>
         [Required(AllowEmptyStrings = false, ErrorMessage = "Не указано ФИО")]
         public string Name { get; set; }
 
@@ -20,14 +23,27 @@ namespace ExpertTool.Models
         /// </summary>
         public string Position { get; set; }
 
-        [Required(ErrorMessage = "Не указан E-mail"), EmailAddress]
-        public string Email { get; set; }
+        /// <summary>
+        /// Краткое описание персоны в 3-4 предложения.
+        /// </summary>
+        [MaxLength(1000, ErrorMessage = "Слишком длинное описание")]
+        public string ShortInfo { get; set; }
 
         /// <summary>
         /// Телефонный номер пользователя.
         /// </summary>
+        [Phone(ErrorMessage = "Поле должно представлять номер телефона")]
         public string Phone { get; set; }
 
+        /// <summary>
+        /// E-mail пользователя, также используемй для входа в систему.
+        /// </summary>
+        [Required(ErrorMessage = "Не указан E-mail"), EmailAddress]
+        public string Email { get; set; }
+
+        /// <summary>
+        /// Пароль, исполььзуемый для входа в систему.
+        /// </summary>
         [Required(ErrorMessage = "Не указан пароль")]
         public string Password { get; set; }
 
