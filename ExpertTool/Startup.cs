@@ -25,6 +25,8 @@ namespace ExpertTool
         {
             string connectionString = Configuration.GetConnectionString("DefaultString");
             services.AddDbContext<EtContext>(options => options.UseSqlServer(connectionString));
+            services.AddDistributedMemoryCache();
+            services.AddSession();
             services.AddMvc();
         }
 
@@ -42,6 +44,8 @@ namespace ExpertTool
             }
 
             app.UseStaticFiles();
+
+            app.UseSession();
 
             //app.UseAuth();
 
