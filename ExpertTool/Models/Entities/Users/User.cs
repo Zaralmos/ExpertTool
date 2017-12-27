@@ -23,11 +23,6 @@ namespace ExpertTool.Models
         /// </summary>
         public string Position { get; set; }
 
-        /// <summary>
-        /// Краткое описание персоны в 3-4 предложения.
-        /// </summary>
-        [MaxLength(1000, ErrorMessage = "Слишком длинное описание")]
-        public string ShortInfo { get; set; }
 
         /// <summary>
         /// Телефонный номер пользователя.

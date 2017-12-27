@@ -2,22 +2,22 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="css/master-page.css">
-    <link rel="stylesheet" type="text/css" href="css/home.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Экспертный инструмент</title>
 
     <environment include="Development">
         <link rel="shortcut icon" href="~/img/icon.png" type="image/png">
-        <link rel="stylesheet" href="~/css/expert-index.css" />
         <link rel="stylesheet" href="~/css/master-page.css" />
+        <link rel="stylesheet" href="~/css/common.css" />
+        @if (ViewBag.Styles != null)
+        {
+            @foreach (string css in ViewBag.Styles)
+            {
+                <link rel="stylesheet" href="@css" />
+            }
+        }
     </environment>
-    @*<environment exclude="Development">
-            <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-                  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-                  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-            <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-        </environment>*@
+
 </head>
 <body>
     <div id="page-wrapper">
@@ -30,7 +30,7 @@
                 <nav id="menu-main">
                     <ul>
                         <li>
-                            <a href=""> Главная </a>
+                            <a href="~/Home/Index"> Главная </a>
                         </li>
                         <li>
                             <a href=""> О проекте </a>
@@ -39,7 +39,7 @@
                             <a href=""> Помощь </a>
                         </li>
                         <li>
-                            <a href=""> Кабинет </a>
+                            <a href="~/Home/Profile"> Кабинет </a>
                         </li>
                         <!-- <a id="logo" href="https://www.youtube.com/results?search_query=Inessa+Kozhurina">
                             <img src="img/logo.png" alt="mount logo">

@@ -75,16 +75,3 @@
     color: #0194fe;
 }
 
-input {
-    border: 10px;
-    font-size: 20px;
-    background: #5cd3e9;
-    margin-right: 30px;
-    padding: 10px 30px;    
-    transition: 0.5s;
-}
-
-input:hover {
-    background: #01124a;
-    color: #5cd3e9;
-}

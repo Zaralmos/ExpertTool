@@ -20,6 +20,7 @@ namespace ExpertTool.Models
                         Email = "admin@email.io",
                         Password = "admin",
                     });
+                context.SaveChanges();
             }
             return context;
         }

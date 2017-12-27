@@ -1,0 +1,34 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    User user = ViewBag.User as User;
+}
+
+<div class="profile">
+
+    <h1>
+        Личный кабинет
+    </h1>
+    <a href="~/Home/DeAuth"> Выйти из профиля </a>
+    <form>
+
+        ФИО
+        <input type="text" name="Position" value="@ViewBag.User?.Name" />
+        Дата рождения
+        <input type="date" name="Birthday" value="@ViewBag.User?.Birthday" />
+        Должность и место работы
+        <input type="text" name="Position" value="@ViewBag.User?.Position" />
+        E-mail
+        <text>
+            @ViewBag.User?.Email
+        </text>
+        @if (ViewBag.User is Expert)
+    {
+        <text> Для того, чтобы поменять пароль, свяжитесь с администратором. (@ViewBag.User?.Admin?.Phone) </text>
+}
+        <input type="text" />
+        <input type="submit"/>
+    </form>
+
+</div>
