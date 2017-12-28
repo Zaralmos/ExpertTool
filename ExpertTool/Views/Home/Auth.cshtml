@@ -1,0 +1,30 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{ 
+    ViewData["DisplayMenu"] = false;
+    ViewData["Title"] = "Аутентификация";
+    ViewData["Styles"] = new string[] {"", ""};
+}
+
+<div class="container">
+    <h1>
+        Авторизация
+    </h1>
+    <form method="post">
+        @if (ViewBag.Error != null)
+        {
+        <div class="error">@ViewBag.Error</div>
+        }
+        E-mail:
+        <br />
+        <input type="email" name="email" placeholder="email..." value="@ViewBag.Email"/>
+        <br />
+        <br />
+        Пароль:
+        <br />
+        <input type="password" name="password" placeholder="password..." value="@ViewBag.Password"/>
+        <br />
+        <input type="submit" value="Войти" />
+    </form>
+</div>
