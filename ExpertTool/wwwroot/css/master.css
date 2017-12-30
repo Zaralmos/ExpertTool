@@ -77,6 +77,28 @@ footer {
 
 /* Content */
 
+/* bunner */
+
+.bunner {
+    background: #00cfc2;
+    vertical-align: middle;
+}
+
+    .bunner > * {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .bunner > img {
+        margin: 15px;
+        max-height: 110px;
+    }
+
+.bunner-title {
+    margin: 10px 20px;
+    font-size: 79px;
+}
+
 /* Block */
 
 .block {

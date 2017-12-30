@@ -30,7 +30,6 @@ namespace ExpertTool.Controllers
         [HttpGet]
         public IActionResult Profile()
         {
-            ViewBag.User = _context.Experts.Find(HttpContext.Session.GetInt32("Id")) as User ?? _context.Admins.Find(HttpContext.Session.GetInt32("Id"));
             return View();
         }
 
@@ -45,10 +44,21 @@ namespace ExpertTool.Controllers
             return Redirect("~/Home/Profile");
         }
 
+        public IActionResult About()
+        {
+            return View();
+        }
+
+        public IActionResult Help()
+        {
+            return View();
+        }
+
         #region Authentification
         private const string AUTHORIZED = "Authorized";
         private bool Authorized => HttpContext.Session.Keys.Contains(AUTHORIZED);
         private int? Id => HttpContext.Session.GetInt32("Id");
+        private User AuthorizedUser => _context.Users.First(user => user.Id == Id && user.GetType().Name == HttpContext.Session.GetString(AUTHORIZED));
 
         [HttpGet]
         public IActionResult Auth() // Любые запросы проходят через это действие. Сюда редиректятся все действия, если человек не авторизован.
@@ -95,6 +105,8 @@ namespace ExpertTool.Controllers
             {
                 context.Result = LocalRedirect("~/Home/Auth"); // перенаправляем его на страницу авторизации
             }
+            if (Authorized)
+                ViewBag.User = AuthorizedUser;
             base.OnActionExecuting(context); // идём дальше
         }
 

@@ -2,4 +2,49 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    ViewData["Title"] = "Инструкция";
+}
+
+<div class="block">
+    <div class="block-title">
+        Пункты меню
+    </div>
+    <div class="block-content">
+        В меню
+    </div>
+</div>
+
+@if (ViewBag.User is Expert)
+{
+    <div class="block">
+        <div class="block-title">
+            Использование механизма оценивания персон
+        </div>
+        <div class="block-content">
+            Чтобы оценить...
+        </div>
+    </div>
+}
+else if (ViewBag.User is Admin)
+{
+    <div class="block">
+        <div class="block-title">
+            Анализ результатов экспертной работы
+        </div>
+        <div class="block-content">
+            Чтобы просмотреть...
+        </div>
+    </div>
+}
+
+@if (ViewBag.User is Admin)
+{ 
+<div class="block">
+    <div class="block-title">
+        Использование панели администратора
+    </div>
+    <div class="block-content">
+        Панель администраторов, доступ к которой можно получить, пройдя в личный кабинет, может быть использована в нескольких целях...
+    </div>
+</div>
 }
