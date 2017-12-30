@@ -57,17 +57,19 @@
     <div class="block-content">
         <form method="post">
             ФИО<br />
-            <input type="text" name="Position" value="@ViewBag.User?.Name" /><br />
+            <input type="text" name="Name" value="@ViewBag.User?.Name" /><br />
             Должность и место работы<br />
             <input type="text" name="Position" value="@ViewBag.User?.Position" /><br />
             Дата рождения<br />
             <input type="date" name="Birthday" value="@ViewBag.User?.Birthday" /><br />
+            Телефон <br />
+            <input type="tel" name="Phone" value="@ViewBag.User?.Phone" /><br />
             E-mail <br />
             <text>@ViewBag.User?.Email</text><br />
             @if (ViewBag.User is Expert)
-            {
-                <text> Для того, чтобы поменять пароль, свяжитесь с администратором. (@ViewBag.User?.Admin?.Phone) </text>
-            }
+    {
+        <text> Для того, чтобы поменять пароль, свяжитесь с администратором. (@ViewBag.User?.Admin?.Phone) </text>
+}
             <input type="submit" value="Сохранить">
             <input type="reset" value="Сбросить">
         </form>

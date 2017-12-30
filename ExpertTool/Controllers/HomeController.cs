@@ -36,11 +36,9 @@ namespace ExpertTool.Controllers
         [HttpPost]
         public IActionResult Profile(User user)
         {
-            if (HttpContext.Session.GetString(AUTHORIZED) == nameof(Expert))
-            {
-                Expert expert = _context.Experts.Find(Id);
-                // обновление базы данных...
-            }
+            AuthorizedUser.UpdateInfo(user);
+            _context.SaveChanges();
+            ViewBag.User = AuthorizedUser;
             return Redirect("~/Home/Profile");
         }
 
