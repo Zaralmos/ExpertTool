@@ -36,7 +36,7 @@ namespace ExpertTool.Controllers
         [HttpPost]
         public IActionResult Profile(User user)
         {
-            AuthorizedUser.UpdateInfo(user);
+            AuthorizedUser.Update(user);
             _context.SaveChanges();
             ViewBag.User = AuthorizedUser;
             return Redirect("~/Home/Profile");
@@ -49,6 +49,39 @@ namespace ExpertTool.Controllers
 
         public IActionResult Help()
         {
+            return View();
+        }
+        
+        [HttpGet]
+        public IActionResult Register(string role)
+        {
+            ViewBag.role = role;           
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Register(User user, string role)
+        {
+            ViewBag.role = role;
+            if (role != nameof(Admin) && role != nameof(Expert))
+                ViewBag.Error = "Неизвестная роль пользователя! Попробуйте ещё раз.";
+            else if (_context.Users.Select(member => member.Email).Contains(user.Email))
+                ViewBag.Error = "В системе уже зарегистрирован пользователь с таким E-mail!";
+            else if (user.Password.Length < 6 || user.Password.Length > 20)
+                ViewBag.Error = "Длина пароля должна быть от 6 до 20 символов!";
+            else
+            {
+                User DbUser = null;
+                if (role == nameof(Expert))
+                    DbUser = new Expert();
+                else if (role == nameof(Admin))
+                    DbUser = new Admin();
+                DbUser.Update(user);
+                DbUser.AdminId = Id;
+                _context.Add(DbUser);
+                _context.SaveChanges();
+                ViewBag.Success = "Новый пользователь успешно зарегистрирован!";
+            }
             return View();
         }
 
@@ -75,7 +108,7 @@ namespace ExpertTool.Controllers
             User user = FindUser(email, password);
             if (user != null)
             {
-                HttpContext.Session.SetString(AUTHORIZED, user is Admin ? nameof(Admin) : nameof(Expert));
+                HttpContext.Session.SetString(AUTHORIZED, user.GetType().Name /* user is Admin ? nameof(Admin) : nameof(Expert)*/);
                 HttpContext.Session.SetInt32("Id", user.Id);
             }
             else

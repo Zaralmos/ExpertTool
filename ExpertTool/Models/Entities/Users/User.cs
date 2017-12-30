@@ -55,7 +55,7 @@ namespace ExpertTool.Models
         /// Обновляет данные текущего пользователя на основе данных user.
         /// </summary>
         /// <param name="user">Источник новых данных.</param>
-        public void UpdateInfo(User user)
+        public void Update(User user)
         {
             if (user.Name != "")
                 Name = user.Name;
@@ -63,6 +63,11 @@ namespace ExpertTool.Models
             Position = user.Position;
             Phone = user.Phone;
             AdminId = user.AdminId;
+
+            if (user.Email != "")
+                Email = user.Email;
+            if (user.Password != "")
+                Password = user.Password;
         }
     }
 }

@@ -2,11 +2,11 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    if (ViewBag.User is Expert)
+    if (ViewBag.RegisteredUser is Expert)
     {
         ViewData["Title"] = "Эксперт";
     }
-    else if (ViewBag.User is Admin)
+    else if (ViewBag.RegisteredUser is Admin)
     {
         ViewData["Title"] = "Администратор";
     }
@@ -14,12 +14,20 @@
 
 <div class="block">
     <div class="block-title">
-        @ViewData["Title"];
+        @ViewData["Title"]
     </div>
     <div class="block-content">
-        <span class="error">В системе уже зарегистрирован пользователь с таким E-mail!</span>
-        <span class="success">Аккаунт успешно создан!</span>
-        <hr>
+        @if (ViewBag.Error != null)
+        {
+            <span class="error">@ViewBag.Error</span>
+            <hr>
+        }
+        @if (ViewBag.Success != null)
+        {
+            <span class="success">@ViewBag.Success</span>
+            <hr>
+        }
+
         <form method="post">
             E-mail
             <br>
