@@ -1,0 +1,49 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    if (ViewBag.User is Expert)
+    {
+        ViewData["Title"] = "Эксперт";
+    }
+    else if (ViewBag.User is Admin)
+    {
+        ViewData["Title"] = "Администратор";
+    }
+}
+
+<div class="block">
+    <div class="block-title">
+        @ViewData["Title"];
+    </div>
+    <div class="block-content">
+        <span class="error">В системе уже зарегистрирован пользователь с таким E-mail!</span>
+        <span class="success">Аккаунт успешно создан!</span>
+        <hr>
+        <form method="post">
+            E-mail
+            <br>
+            <input type="email" name="Email" required>
+            <br> Пароль
+            <br>
+            <input type="text" name="Password" required>
+            <br> ФИО
+            <br>
+            <input type="text" name="Name" required>
+            <br> Должность и место работы
+            <br>
+            <input type="text" name="Position">
+            <br> Дата рождения
+            <br>
+            <input type="date" name="Birthday">
+            <br> Телефонный номер
+            <br>
+            <input type="tel" name="Phone">
+            <br>
+            <input type="submit" value="Сохранить">
+            <input type="reset" value="Очистить">
+        </form>
+    </div>
+</div>
+
+
