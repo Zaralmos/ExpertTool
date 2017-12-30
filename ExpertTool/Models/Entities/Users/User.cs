@@ -57,8 +57,9 @@ namespace ExpertTool.Models
         /// <param name="user">Источник новых данных.</param>
         public void UpdateInfo(User user)
         {
-            Name = user.Name;
-            Birthday = user.Birthday;
+            if (user.Name != "")
+                Name = user.Name;
+            Birthday = user.Birthday ;
             Position = user.Position;
             Phone = user.Phone;
             AdminId = user.AdminId;
