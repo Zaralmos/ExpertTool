@@ -4,27 +4,41 @@
 @{ 
     ViewData["DisplayMenu"] = false;
     ViewData["Title"] = "Аутентификация";
-    ViewData["Styles"] = new string[] {"", ""};
+    ViewData["Styles"] = new string[] {"/css/auth.css"};
 }
 
-<div class="container">
-    <h1>
-        Авторизация
-    </h1>
-    <form method="post">
-        @if (ViewBag.Error != null)
-        {
-        <div class="error">@ViewBag.Error</div>
-        }
-        E-mail:
-        <br />
-        <input type="email" name="email" placeholder="email..." value="@ViewBag.Email"/>
-        <br />
-        <br />
-        Пароль:
-        <br />
-        <input type="password" name="password" placeholder="password..." value="@ViewBag.Password"/>
-        <br />
-        <input type="submit" value="Войти" />
-    </form>
-</div>
+    <div class="block">
+        <div class="bunner">
+            <img src="~/img/symbols/ranhigs.png">
+            <img src="~/img/symbols/bmstu.png">
+
+            <div class="bunner-title">
+                <b>Экспертный</b> инструмент
+            </div>
+        </div>
+    </div>
+
+    <div class="block">
+        <div class="block-title">
+            Авторизация
+        </div>
+        <div class="block-content">
+            @if (ViewBag.Error != null)
+            {
+            <div class="error">@ViewBag.Error</div>
+            <hr>
+            }
+            <form me>
+                E-mail
+                <br>
+                <input type="email" name="email" value="@ViewBag.Email"required>
+                <br> Пароль
+                <br>
+                <input type="password" name="password" value="@ViewBag.Password" required>
+                <br>
+                <input type="submit" value="Войти">
+                <input type="reset" value="Очитстить">
+            </form>
+        </div>
+    </div>
+       
