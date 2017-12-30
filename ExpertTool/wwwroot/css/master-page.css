@@ -57,22 +57,23 @@ body {
 
 /* maiun menu */
 
-#menu-main {
+.menu-main {
     background: #5cd3e9;
     font-size: 0;
 }
 
-#menu-main > ul > li {
+.menu-main > ul > li {
     display: inline-block;
     list-style: none;
 }
 
-#menu-main > ul > li:last-child {
+.menu-main > ul > li:last-child {
     margin-right: 0;
     float: right;
 }
 
-#menu-main > ul > li > a {
+
+.menu-main > ul > li > a {
     height: 70px;
     line-height: 70px;
     font-size: 20px;
@@ -82,13 +83,18 @@ body {
     transition: 0.5s;
 }
 
-#menu-main > ul > li > a:hover {
-   color: #5cd3e9; 
-   background: #01124a;
+.menu-main > ul > li > a:hover {
+    color: #5cd3e9;
+    background: #02238e;
+}
+
+.menu-main > ul > li > a[class=chosen] {
+    color: #5cd3e9;
+background: #01124a;
 }
 
 #logo {
-    float: right;
+float: right;
 }
 
 #logo > img {

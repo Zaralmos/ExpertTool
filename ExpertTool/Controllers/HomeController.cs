@@ -39,7 +39,7 @@ namespace ExpertTool.Controllers
         {
             if (HttpContext.Session.GetString(AUTHORIZED) == nameof(Expert))
             {
-                Expert expert = _context.Experts.Find(Id);
+                Expert expert = _context.Experts.Find(UserId);
                 // обновление базы данных...
             }
             return Redirect("~/Home/Profile");
@@ -48,7 +48,7 @@ namespace ExpertTool.Controllers
         #region Authentification
         private const string AUTHORIZED = "Authorized";
         private bool Authorized => HttpContext.Session.Keys.Contains(AUTHORIZED);
-        private int? Id => HttpContext.Session.GetInt32("Id");
+        private int? UserId => HttpContext.Session.GetInt32("Id");
 
         [HttpGet]
         public IActionResult Auth() // Любые запросы проходят через это действие. Сюда редиректятся все действия, если человек не авторизован.

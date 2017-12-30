@@ -23,14 +23,21 @@
     <div id="page-wrapper">
 
     @if (!(ViewData["DisplayMenu"] is  bool) || (bool)ViewData["DisplayMenu"] != false)
-    { 
+    {
         <!-- header -->
         <header>
             <div class="container">
-                <nav id="menu-main">
+                <nav class="menu-main">
                     <ul>
                         <li>
+                            @if (ViewData["Title"]?.ToString() == "Главная")
+                            {
+                            <a class="chosen" href="~/Home/Index"> Главная </a>
+                            }
+                            else
+                            {
                             <a href="~/Home/Index"> Главная </a>
+                            }
                         </li>
                         <li>
                             <a href=""> О проекте </a>
