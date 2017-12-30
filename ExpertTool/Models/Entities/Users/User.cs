@@ -50,5 +50,20 @@ namespace ExpertTool.Models
         /// Админ, который зарегистрировал данного пользователя.
         /// </summary>
         public Admin Admin { get; set; }
+
+        /// <summary>
+        /// Обновляет данные текущего пользователя на основе данных user.
+        /// </summary>
+        /// <param name="user">Источник новых данных.</param>
+        public void Update(User user)
+        {
+            Name = user.Name;
+            Birthday = user.Birthday;
+            Position = user.Position;
+            Phone = user.Phone;
+            Email = user.Email;
+            Password = user.Password;
+            AdminId = user.AdminId;
+        }
     }
 }
