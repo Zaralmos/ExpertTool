@@ -3,7 +3,7 @@
 *@
 @{ 
     ViewData["DisplayMenu"] = false;
-    ViewData["Title"] = "Аутентификация";
+    ViewData["Title"] = "Авторизация";
     ViewData["Styles"] = new string[] {"/css/auth.css"};
 }
 
@@ -25,10 +25,12 @@
         <div class="block-content">
             @if (ViewBag.Error != null)
             {
-            <div class="error">@ViewBag.Error</div>
+            <div class="error"> 
+                <span class="error"> @ViewBag.Error </span>
+            </div>
             <hr>
             }
-            <form me>
+            <form method="post">
                 E-mail
                 <br>
                 <input type="email" name="email" value="@ViewBag.Email"required>
