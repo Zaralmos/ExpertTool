@@ -11,9 +11,10 @@ using System;
 namespace ExpertTool.Migrations
 {
     [DbContext(typeof(EtContext))]
-    partial class EtContextModelSnapshot : ModelSnapshot
+    [Migration("20180101211135_Third")]
+    partial class Third
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,8 +147,6 @@ namespace ExpertTool.Migrations
                     b.Property<string>("Name");
 
                     b.Property<string>("Position");
-
-                    b.Property<DateTime>("Published");
 
                     b.Property<string>("ShortInfo")
                         .HasMaxLength(1000);

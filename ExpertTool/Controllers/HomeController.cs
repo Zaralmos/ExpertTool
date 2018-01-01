@@ -140,21 +140,48 @@ namespace ExpertTool.Controllers
             return result;
         }
 
-        public IActionResult Person(int id)
+        [HttpGet]
+        public IActionResult Person(int? id)
         {
-            ViewBag.Person = _context.People.Find(id);
-            if (AuthorizedUser is Expert)
-                ViewBag.Scales = _context.People.Find(id)?.Conclusions.First(conclusion => conclusion.ExpertId == Id)?.Evaluation.Values;
-            else
+            if (id != null)
             {
-                IEnumerable<byte> summary = new byte[10]; // Шо-то извращение какое-то. Если не лень, люди добрые, переделайте кусок кода, плз!..
-                IEnumerable<Conclusion> conclusions = _context.Conclusions.Where(conclusion => conclusion.PersonId == id);
-                foreach (Conclusion conclusion in conclusions)
-                    summary = summary.Zip(conclusion.Evaluation.Values, (a, b) => (byte)(a + b));
-                ViewBag.Scales = summary.Select(evaluation => evaluation / conclusions.Count()); 
+                ViewBag.Person = _context.People.Find(id);
+                if (AuthorizedUser is Expert)
+                    ViewBag.Scales = _context.People.Find(id)?.Conclusions.First(conclusion => conclusion.ExpertId == Id)?.Evaluation.Values;
+                else
+                {
+                    IEnumerable<byte> summary = new byte[10]; // Шо-то извращение какое-то. Если не лень, люди добрые, переделайте кусок кода, плз!..
+                    IEnumerable<Conclusion> conclusions = _context.Conclusions.Where(conclusion => conclusion.PersonId == id);
+                    foreach (Conclusion conclusion in conclusions)
+                        summary = summary.Zip(conclusion.Evaluation.Values, (a, b) => (byte)(a + b));
+                    ViewBag.Scales = summary.Select(evaluation => evaluation / conclusions.Count());
+                }
             }
+
             return View();
         }
+
+        [HttpPost]
+        public IActionResult Person(Person person, int? id)
+        {
+            if (id != null)
+            {
+                person.Id = id??0;
+                _context.People.Attach(person);
+            }
+            else
+            {
+                person.AdminId = Id??0;
+                person.Published = DateTime.Now;
+                _context.People.Add(person);
+                
+                int i = _context.People.Count();
+            }
+            _context.SaveChanges();
+            ViewBag.Person = person;
+            return View();
+        }
+
         #region Authentification
         private const string AUTHORIZED = "Authorized";
 

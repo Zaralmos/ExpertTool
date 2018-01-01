@@ -34,5 +34,7 @@ namespace ExpertTool.Models
         public virtual Admin Admin { get; set; }
 
         public virtual ICollection<Conclusion> Conclusions { get; set; } = new List<Conclusion>();
+
+        public DateTime Published { get; set; }
     }
 }
