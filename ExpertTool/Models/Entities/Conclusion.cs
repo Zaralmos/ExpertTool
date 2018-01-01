@@ -13,7 +13,7 @@ namespace ExpertTool.Models
     {
         public int Id { get; set; }
 
-        public Evaluation MarkId { get; set; }
+        public Evaluation Evaluation { get; set; }
 
         public string Comment { get; set; }
 

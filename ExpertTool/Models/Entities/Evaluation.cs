@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace ExpertTool.Models
@@ -16,6 +17,45 @@ namespace ExpertTool.Models
 
         [NotMapped]
         public byte[] Values = new byte [10];
+
+        static public PropertyInfo PropertyName(int number)
+        {
+            PropertyInfo result = null;
+            switch (number)
+            {
+                case 0:
+                    result = typeof(Evaluation).GetProperty(nameof(Hypochondriasis));
+                    break;
+                case 1:
+                    result = typeof(Evaluation).GetProperty(nameof(Depression));
+                    break;
+                case 2:
+                    result = typeof(Evaluation).GetProperty(nameof(Hysteria));
+                    break;
+                case 3:
+                    result = typeof(Evaluation).GetProperty(nameof(PsychopathicDeviate));
+                    break;
+                case 4:
+                    result = typeof(Evaluation).GetProperty(nameof(MaculinityFeminity));
+                    break;
+                case 5:
+                    result = typeof(Evaluation).GetProperty(nameof(Paranoia));
+                    break;
+                case 6:
+                    result = typeof(Evaluation).GetProperty(nameof(Psychasthenia));
+                    break;
+                case 7:
+                    result = typeof(Evaluation).GetProperty(nameof(Schizophrenia));
+                    break;
+                case 8:
+                    result = typeof(Evaluation).GetProperty(nameof(Hypomania));
+                    break;
+                case 9:
+                    result = typeof(Evaluation).GetProperty(nameof(SocialInteroversion));
+                    break;             
+            }
+            return result;
+        }
 
         public byte Hypochondriasis
         {
@@ -71,7 +111,7 @@ namespace ExpertTool.Models
             set => Values[8] = value;
         }
 
-        public byte Socialbyteroversion
+        public byte SocialInteroversion
         {
             get => Values[9];
             set => Values[9] = value;
