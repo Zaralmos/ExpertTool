@@ -57,16 +57,16 @@ namespace ExpertTool.Models
         /// <param name="user">Источник новых данных.</param>
         public void Update(User user)
         {
-            if (user.Name != "")
+            if (!string.IsNullOrWhiteSpace(user.Name)) 
                 Name = user.Name;
             Birthday = user.Birthday ;
             Position = user.Position;
             Phone = user.Phone;
             AdminId = user.AdminId;
 
-            if (user.Email != "")
+            if (!string.IsNullOrWhiteSpace(user.Email))
                 Email = user.Email;
-            if (user.Password != "")
+            if (!string.IsNullOrWhiteSpace(user.Password))
                 Password = user.Password;
         }
     }

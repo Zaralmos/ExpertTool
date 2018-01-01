@@ -2,13 +2,13 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    if (ViewBag.RegisteredUser is Expert)
+    if (ViewBag.role == nameof(Expert))
     {
-        ViewData["Title"] = "Эксперт";
+        ViewData["Title"] = "Регистрация Эксперта";
     }
-    else if (ViewBag.RegisteredUser is Admin)
+    else if (ViewBag.role == nameof(Admin))
     {
-        ViewData["Title"] = "Администратор";
+        ViewData["Title"] = "Регистрация администратора";
     }
 }
 

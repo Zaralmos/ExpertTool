@@ -12,7 +12,6 @@ namespace ExpertTool.Controllers
 {
     public class HomeController : Controller
     {
-
         public EtContext _context { get; set; }
 
         public HomeController(EtContext context)
@@ -20,19 +19,30 @@ namespace ExpertTool.Controllers
             _context = context;
         }
 
-
-        // Представляет главную страницу
+        /// <summary>
+        /// Представляет главную страницу со списком персон, по которым необходимо получить экспертные оценки.
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
             return View();
         }
 
+        /// <summary>
+        /// Представляет профиль пользователя, даёт доступ в его личный кабинет
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Profile()
         {
             return View();
         }
 
+        /// <summary>
+        /// Служит для обновления персональных данных через личный кабинет.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Profile(User user)
         {
@@ -42,55 +52,108 @@ namespace ExpertTool.Controllers
             return Redirect("~/Home/Profile");
         }
 
+        /// <summary>
+        /// Представляет информацию о проекте "Экспертный инструмент"
+        /// </summary>
+        /// <returns></returns>
         public IActionResult About()
         {
             return View();
         }
 
+        /// <summary>
+        /// Представляет раздел помощи по работе с проектом, даёт инструкции по выполнению действий при помощи системы.
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Help()
         {
             return View();
         }
-        
+
+        /// <summary>
+        /// Предоставляет администратору возможность регистрации новых пользователей.
+        /// </summary>
+        /// <param name="role">Название роли нового пользователя (<see cref="Expert"/>, <see cref="Admin"/>)</param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Register(string role)
         {
-            ViewBag.role = role;           
+            ViewBag.role = role;
             return View();
         }
 
+        /// <summary>
+        /// Служит для получения информации о новом пользователе и внесении его в базу данных.
+        /// </summary>
+        /// <param name="user">Информация о новом пользователе.</param>
+        /// <param name="role">Название роли нового пользователя (<see cref="Expert"/>, <see cref="Admin"/>)</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Register(User user, string role)
         {
-            ViewBag.role = role;
-            if (role != nameof(Admin) && role != nameof(Expert))
-                ViewBag.Error = "Неизвестная роль пользователя! Попробуйте ещё раз.";
-            else if (_context.Users.Select(member => member.Email).Contains(user.Email))
-                ViewBag.Error = "В системе уже зарегистрирован пользователь с таким E-mail!";
-            else if (user.Password.Length < 6 || user.Password.Length > 20)
-                ViewBag.Error = "Длина пароля должна быть от 6 до 20 символов!";
-            else
+            try
             {
-                User DbUser = null;
-                if (role == nameof(Expert))
-                    DbUser = new Expert();
-                else if (role == nameof(Admin))
-                    DbUser = new Admin();
-                DbUser.Update(user);
-                DbUser.AdminId = Id;
-                _context.Add(DbUser);
-                _context.SaveChanges();
-                ViewBag.Success = "Новый пользователь успешно зарегистрирован!";
+                ViewBag.role = role;
+                if (role != nameof(Admin) && role != nameof(Expert))
+                    ViewBag.Error = "Неизвестная роль пользователя! Попробуйте ещё раз.";
+                else if (_context.Users.Select(member => member.Email).Contains(user.Email))
+                    ViewBag.Error = "В системе уже зарегистрирован пользователь с таким E-mail!";
+                else if (user.Password.Length < 6 || user.Password.Length > 20)
+                    ViewBag.Error = "Длина пароля должна быть от 6 до 20 символов!";
+                else
+                {
+                    User DbUser = null;
+                    if (role == nameof(Expert))
+                        DbUser = new Expert();
+                    else if (role == nameof(Admin))
+                        DbUser = new Admin();
+                    DbUser.Update(user);
+                    DbUser.AdminId = Id;
+                    _context.Add(DbUser);
+                    _context.SaveChanges();
+                    ViewBag.RegisteredUser = DbUser;
+                    ViewBag.Success = "Новый пользователь успешно зарегистрирован!";
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = "При регистрации призошла ошибка! Попробуйте ещё раз.";
             }
             return View();
         }
 
+        /// <summary>
+        /// Представляет администратору список всех пользователей, зарегистрированныъх в системе.
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Users()
+        {
+            IActionResult result = null;
+            if (AuthorizedUser is Admin)
+            {
+                ViewBag.Admins = _context.Admins;
+                ViewBag.Experts = _context.Experts;
+                result = View();
+            }
+            else
+                result = Forbid();
+            return result;
+        }
+
         #region Authentification
         private const string AUTHORIZED = "Authorized";
+
+        /// <summary>
+        /// Показывает, авторизован ли в системе пользователь, осуществляющий запрос.
+        /// </summary>
         private bool Authorized => HttpContext.Session.Keys.Contains(AUTHORIZED);
         private int? Id => HttpContext.Session.GetInt32("Id");
         private User AuthorizedUser => _context.Users.First(user => user.Id == Id && user.GetType().Name == HttpContext.Session.GetString(AUTHORIZED));
 
+        /// <summary>
+        /// Предоставляет доступ к странице авторизации
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Auth() // Любые запросы проходят через это действие. Сюда редиректятся все действия, если человек не авторизован.
         {
@@ -102,6 +165,12 @@ namespace ExpertTool.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Принимает данные, отправленные пользователем для авторизации в системе.
+        /// </summary>
+        /// <param name="email">E-mail пользователя.</param>
+        /// <param name="password">Пароль пользователя.</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Auth(string email, string password)
         {
@@ -121,7 +190,10 @@ namespace ExpertTool.Controllers
             return Redirect("~/Home/Index");
         }
 
-        // позволяет разлогиниться
+        /// <summary>
+        /// Обеспечивает пользователю возможность выйти из системы принудительно.
+        /// </summary>
+        /// <returns></returns>
         public IActionResult DeAuth()
         {
             if (Authorized)
@@ -129,6 +201,10 @@ namespace ExpertTool.Controllers
             return LocalRedirect("~/Home/Auth");
         }
 
+        /// <summary>
+        /// Переопределённый метод проверки входящего запроса, позволяющий убедится, что клиент авторизован в системе.
+        /// </summary>
+        /// <param name="context"></param>
         [NonAction]
         public override void OnActionExecuting(ActionExecutingContext context) // пержде чем начнётся обработка любого запроса, проверяем
         {

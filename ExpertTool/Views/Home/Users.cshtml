@@ -2,4 +2,47 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    ViewData["Title"] = "Пользователи";
 }
+
+<div class="block">
+
+    <div class="block-title">
+        Админимтраторы
+    </div>
+    <div class="block-content">
+        <ul>
+            @foreach (Admin admin in ViewBag.Admins)
+            {
+                <li>
+                    <div class="user">
+                        <h2 class="name">@admin.Name</h2>
+                        <div class="position">@admin.Position</div>
+                        @admin.Email
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+<div class="block">
+
+    <div class="block-title">
+        Эксперты
+    </div>
+    <div class="block-content">
+        <ul>
+            @foreach (Expert expert in ViewBag.Experts)
+            {
+                <li>
+                    <div class="user">
+                        <h2 class="name">@expert.Name</h2>
+                        <div class="position">@expert.Position</div>
+                        @expert.Email
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
