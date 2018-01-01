@@ -1,5 +1,28 @@
 ﻿@{
-        ViewData["Title"] = "Главная";
-        ViewData["Styles"] = new string[] { "/css/expert-index.css" };
+    ViewData["Title"] = "Главная";
+    ViewData["Styles"] = new string[] { "/css/expert-index.css" };
 }
 
+<div class="block">
+    <div class="block-title">
+        Актуальные персоны
+    </div>
+    <div class="block-content">
+        <ul>
+
+            @foreach (Person perosn in ViewBag.People)
+            {
+            <li>
+
+                <div class="person">
+                    <a href="~/Home/Person/@perosn.Id">
+                        <h2 class="name">@perosn.Name</h2>
+                    </a>
+                    <div class="position">@perosn.Position</div>
+                    <div class="published">@perosn.Published.ToShortDateString()</div>
+                </div>
+            </li>
+            }
+        </ul>
+    </div>
+</div>

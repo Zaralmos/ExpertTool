@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using ExpertTool.Models;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExpertTool.Controllers
 {
@@ -25,6 +26,7 @@ namespace ExpertTool.Controllers
         /// <returns></returns>
         public IActionResult Index()
         {
+            ViewBag.People = _context.People;
             return View();
         }
 
@@ -147,7 +149,7 @@ namespace ExpertTool.Controllers
             {
                 ViewBag.Person = _context.People.Find(id);
                 if (AuthorizedUser is Expert)
-                    ViewBag.Scales = _context.People.Find(id)?.Conclusions.First(conclusion => conclusion.ExpertId == Id)?.Evaluation.Values;
+                    ViewBag.Scales = _context.People.Find(id)?.Conclusions.FirstOrDefault(conclusion => conclusion.ExpertId == Id)?.Evaluation.Values;
                 else
                 {
                     IEnumerable<byte> summary = new byte[10]; // Шо-то извращение какое-то. Если не лень, люди добрые, переделайте кусок кода, плз!..
@@ -166,8 +168,7 @@ namespace ExpertTool.Controllers
         {
             if (id != null)
             {
-                person.Id = id??0;
-                _context.People.Attach(person);
+                _context.People.Find(id)?.Update(person);
             }
             else
             {
@@ -191,6 +192,8 @@ namespace ExpertTool.Controllers
         private bool Authorized => HttpContext.Session.Keys.Contains(AUTHORIZED);
         private int? Id => HttpContext.Session.GetInt32("Id");
         private User AuthorizedUser => _context.Users.First(user => user.Id == Id && user.GetType().Name == HttpContext.Session.GetString(AUTHORIZED));
+
+        public EntityState Modified { get; private set; }
 
         /// <summary>
         /// Предоставляет доступ к странице авторизации

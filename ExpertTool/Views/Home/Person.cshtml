@@ -44,7 +44,7 @@ else if (ViewBag.User is Admin)
                 Должность<br>
                 <input type="text" name="Position" value="@ViewBag.Person?.Position" />
                 дата рождения<br>
-                <input type="date" name="Birthday" value="@ViewBag.Person?.Birthday.ToShortDateString()" />
+                <input type="date" name="Birthday" value="@DateTimeExtensions.ToHtmlDateFormat(ViewBag.Person?.Birthday)" />
                 <hr>
                 Биография
                 <textarea name="Biography">@ViewBag.Person?.Biography</textarea>
