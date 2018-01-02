@@ -2,33 +2,96 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    User user = ViewBag.User as User;
+    @using ExpertTool.Views;
+    ViewData["Title"] = "Личный кабинет";
 }
 
-<div class="profile">
 
-    <h1>
-        Личный кабинет
-    </h1>
-    <a href="~/Home/DeAuth"> Выйти из профиля </a>
-    <form>
+@if (ViewBag.User is Admin)
+{
 
-        ФИО
-        <input type="text" name="Position" value="@ViewBag.User?.Name" />
-        Дата рождения
-        <input type="date" name="Birthday" value="@ViewBag.User?.Birthday" />
-        Должность и место работы
-        <input type="text" name="Position" value="@ViewBag.User?.Position" />
-        E-mail
-        <text>
-            @ViewBag.User?.Email
-        </text>
-        @if (ViewBag.User is Expert)
-    {
-        <text> Для того, чтобы поменять пароль, свяжитесь с администратором. (@ViewBag.User?.Admin?.Phone) </text>
+    <div class="block">
+        <div class="block-title">
+            Панель администратора
+        </div>
+        <div class="block-content admin-panel">
+            <p>
+                Нажмите
+                <a href="~/Home/Person">
+                    <input type="button" value="Добавить персону">
+                </a>
+                , чтобы добавить новую персону для экспертной оценки.
+            </p>
+            <p>
+                Чтобы посмотреть список всех персон, вынесенных на рассмотрение экспертам, перейдите на главную страницу или нажмите
+                <a href="~/Home/Index">
+                    <input type="button" value="Список персон">
+                </a>
+            </p>
+            <hr>
+            <p>
+                Для того чтобы зарегистрировать нового эксперта, нажмите
+                <a href="~/Home/Register?role=Expert">
+                    <input type="button" value="Зарегистрировать эксперта">
+                </a>
+            </p>
+            <p>
+                Чтобы создать ещё одну учётную запись администратора, нажмите
+                <a href="~/Home/Register?role=Admin">
+                    <input type="button" value="Зарегистрировать администратора">
+                </a>
+            </p>
+            <p>
+                Чтобы посмотреть список всех зарегистрированных пользователей, нажмите
+                <a href="~/Home/Users">
+                    <input type="button" value="Список пользователей">
+                </a>
+            </p>
+        </div>
+    </div>
 }
-        <input type="text" />
-        <input type="submit"/>
-    </form>
 
+<div class="block">
+    <div class="block-title">
+        Персональные данные
+    </div>
+    <div class="block-content">
+        @if (ViewBag.Error != null)
+        {
+            <span class="error">@ViewBag.Error</span>
+            <hr>
+        }
+        @if (ViewBag.Success != null)
+        {
+            <span class="success">@ViewBag.Success</span>
+            <hr>
+        }
+        <form method="post">
+            ФИО<br />
+            <input type="text" name="Name" value="@ViewBag.User?.Name" /><br />
+            Должность и место работы<br />
+            <input type="text" name="Position" value="@ViewBag.User?.Position" /><br />
+            Дата рождения<br />
+            <input type="date" name="Birthday" value="@ExpertTool.Views.DateTimeExtensions.ToHtmlDateFormat(ViewBag.User?.Birthday)" /><br />
+            Телефон <br />
+            <input type="tel" name="Phone" value="@ViewBag.User?.Phone" /><br />
+            E-mail <br />
+            <text>@ViewBag.User?.Email</text><br />
+            @if (ViewBag.User is Expert)
+            {
+                <text> Для того, чтобы поменять пароль, свяжитесь с администратором. (@ViewBag.User?.Admin?.Phone) </text> <br>
+            }
+            <input type="submit" value="Сохранить">
+            <input type="reset" value="Сбросить">
+        </form>
+    </div>
+</div>
+
+<div class="block">
+    <div class="block-content">
+        Выход из аккаунта происходит автоматически после окончания сессии. Чтобы выйти принудительно, нажмите
+        <a href="~/Home/DeAuth">
+            <input type="button" value="Выйти">
+        </a>
+    </div>
 </div>

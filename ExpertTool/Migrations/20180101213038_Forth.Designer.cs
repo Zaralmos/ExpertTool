@@ -11,9 +11,10 @@ using System;
 namespace ExpertTool.Migrations
 {
     [DbContext(typeof(EtContext))]
-    partial class EtContextModelSnapshot : ModelSnapshot
+    [Migration("20180101213038_Forth")]
+    partial class Forth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,9 +57,29 @@ namespace ExpertTool.Migrations
 
                     b.Property<string>("Comment");
 
-                    b.Property<byte>("Depression");
+                    b.Property<int?>("EvaluationId");
 
                     b.Property<int>("ExpertId");
+
+                    b.Property<int>("PersonId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EvaluationId");
+
+                    b.HasIndex("ExpertId");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("Conclusions");
+                });
+
+            modelBuilder.Entity("ExpertTool.Models.Evaluation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<byte>("Depression");
 
                     b.Property<byte>("Hypochondriasis");
 
@@ -70,8 +91,6 @@ namespace ExpertTool.Migrations
 
                     b.Property<byte>("Paranoia");
 
-                    b.Property<int>("PersonId");
-
                     b.Property<byte>("Psychasthenia");
 
                     b.Property<byte>("PsychopathicDeviate");
@@ -82,11 +101,7 @@ namespace ExpertTool.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExpertId");
-
-                    b.HasIndex("PersonId");
-
-                    b.ToTable("Conclusions");
+                    b.ToTable("Evaluations");
                 });
 
             modelBuilder.Entity("ExpertTool.Models.Expert", b =>
@@ -154,6 +169,10 @@ namespace ExpertTool.Migrations
 
             modelBuilder.Entity("ExpertTool.Models.Conclusion", b =>
                 {
+                    b.HasOne("ExpertTool.Models.Evaluation", "Evaluation")
+                        .WithMany()
+                        .HasForeignKey("EvaluationId");
+
                     b.HasOne("ExpertTool.Models.Expert", "Expert")
                         .WithMany("Conclusions")
                         .HasForeignKey("ExpertId")

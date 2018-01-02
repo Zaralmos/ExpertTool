@@ -1,14 +1,22 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+    if (ViewData["Title"] != null)
+    {
+        ViewData[ViewData["Title"].ToString()] = "selected";
+    }
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@ViewData["Title"] - Экспертный инструмент</title>
 
     <environment include="Development">
         <link rel="shortcut icon" href="~/img/icon.png" type="image/png">
-        <link rel="stylesheet" href="~/css/master-page.css" />
-        <link rel="stylesheet" href="~/css/common.css" />
+        <link rel="stylesheet" type="text/css" href="~/css/base.css">
+        <link rel="stylesheet" type="text/css" href="~/css/master.css">
         @if (ViewBag.Styles != null)
         {
             @foreach (string css in ViewBag.Styles)
@@ -21,25 +29,35 @@
 </head>
 <body>
     <div id="page-wrapper">
-
-    @if (!(ViewData["DisplayMenu"] is  bool) || (bool)ViewData["DisplayMenu"] != false)
-    { 
-        <!-- header -->
-        <header>
-            <div class="container">
-                <nav id="menu-main">
+        @if (!(ViewData["DisplayMenu"] is bool) || (bool)ViewData["DisplayMenu"] != false)
+        {
+            <!-- header -->
+            <header>
+                <nav class="menu-main">
                     <ul>
                         <li>
-                            <a href="~/Home/Index"> Главная </a>
+                            <a href="~/Home/Index" class="@ViewData["Главная"]">
+                                <div class="menu-item-highlight"></div>
+                                Главная
+                            </a>
                         </li>
                         <li>
-                            <a href=""> О проекте </a>
+                            <a href="~/Home/About" class="@ViewData["О проекте"]">
+                                <div class="menu-item-highlight"></div>
+                                О проекте
+                            </a>
                         </li>
                         <li>
-                            <a href=""> Помощь </a>
+                            <a href="~/Home/Help" class="@ViewData["Инструкция"]">
+                                <div class="menu-item-highlight"></div>
+                                Инструкция
+                            </a>
                         </li>
                         <li>
-                            <a href="~/Home/Profile"> Кабинет </a>
+                            <a href="~/Home/Profile" class="@ViewData["Личный кабинет"]">
+                                <div class="menu-item-highlight"></div>
+                                Личный кабинет
+                            </a>
                         </li>
                         <!-- <a id="logo" href="https://www.youtube.com/results?search_query=Inessa+Kozhurina">
                             <img src="img/logo.png" alt="mount logo">
@@ -47,51 +65,26 @@
                     </ul>
                     <dic class="clear"></dic>
                 </nav>
-            </div>
-        </header>
+            </header>
         }
+
+
+
         <!-- content -->
-        @RenderBody()
+            <section class="content">
+                @RenderBody()
+            </section>
+
+
 
         <!-- footer -->
-        <div class="container">
-            <footer id="contacts">
-                <b>Экспертный интсрумент</b> <br>
-                <!-- <div id="media">
-                    <ul >
-                            <li>
-                                <a href="https://vk.com/almosvirog">
-                                    <img src="img/media/vk.png" alt="Sergei Solovev vk.com">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.facebook.com/AlmosVirog">
-                                        <img src="img/media/facebook.png" alt="Sergei Solovev facebook">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.youtube.com/channel/UCELR_2tIEJQJpCmEVcU5MvA?view_as=subscriber">
-                                    <img src="img/media/youtube.png" alt="Sergei Solovev youtube">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.instagram.com/almosvirog/">
-                                        <img src="img/media/instagram.png" alt="Sergei Solovev instagram">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://ru.pinterest.com/almosvirog/">
-                                    <img src="img/media/pinterest.png" alt="Sergei Solovev pinterest">
-                                </a>
-                            </li>
-                        </ul>
-                    </div> -->
-                E-mail: for.example@email.com <br>
-                Телефон: 8 (912) 012-00-12<br>
-                <div id="signature">&copy; Web-site by Batin & Solovev 2017</div>
-
-            </footer>
-        </div>
+        <footer>
+            Экспертный инструмент
+            <br> Телефон: 8 (912) 012-00-12
+            <br> E-mail: for.example@email.com
+            <br>
+            <div class="signature">&copy; Web-site by Roman Batin & Sergei Solovev 2018</div>
+        </footer>
     </div>
     @RenderSection("Scripts", required: false)
 </body>

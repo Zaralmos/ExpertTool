@@ -1,0 +1,57 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    if (ViewBag.role == nameof(Expert))
+    {
+        ViewData["Title"] = "Регистрация Эксперта";
+    }
+    else if (ViewBag.role == nameof(Admin))
+    {
+        ViewData["Title"] = "Регистрация администратора";
+    }
+}
+
+<div class="block">
+    <div class="block-title">
+        @ViewData["Title"]
+    </div>
+    <div class="block-content">
+        @if (ViewBag.Error != null)
+        {
+            <span class="error">@ViewBag.Error</span>
+            <hr>
+        }
+        @if (ViewBag.Success != null)
+        {
+            <span class="success">@ViewBag.Success</span>
+            <hr>
+        }
+
+        <form method="post">
+            E-mail
+            <br>
+            <input type="email" name="Email" value="@ViewBag.RegisteredUser?.Email" required>
+            <br> Пароль
+            <br>
+            <input type="text" name="Password" value="@ViewBag.RegisteredUser?.Password" required>
+            <br> ФИО
+            <br>
+            <input type="text" name="Name" value="@ViewBag.RegisteredUser?.Name" required>
+            <br> Должность и место работы
+            <br>
+            <input type="text" name="Position" value="@ViewBag.RegisteredUser?.Position">
+            <br> Дата рождения
+            <br>
+            <input type="date" name="Birthday" value="@DateTimeExtensions.ToHtmlDateFormat(ViewBag.RegisteredUser?.Birthday)">
+            <br> Телефонный номер
+            <br>
+            <input type="tel" name="Phone" value="@ViewBag.RegisteredUser?.Phone">
+            <br>
+            <input type="submit" value="Сохранить">
+            <input type="reset" value="Очистить">
+        </form>
+    </div>
+</div>
+
+

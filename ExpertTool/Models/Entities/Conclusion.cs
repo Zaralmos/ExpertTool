@@ -9,11 +9,22 @@ namespace ExpertTool.Models
     /// <summary>
     /// Представляет класс оценки экспертом персоны по системе упрощённой MMPI экспертом.
     /// </summary>
-    public class Conclusion
+    public class Conclusion : Evaluation
     {
-        public int Id { get; set; }
+        public Conclusion()
+        {
 
-        public Evaluation MarkId { get; set; }
+        }
+
+        public Conclusion(string comment = null, int expertId = 0)
+        {
+            if (comment != null)
+                Comment = comment;
+            if (ExpertId != 0)
+                ExpertId = expertId;
+        }
+
+        public int Id { get; set; }
 
         public string Comment { get; set; }
 
@@ -32,5 +43,12 @@ namespace ExpertTool.Models
         public int ExpertId { get; set; }
         /// Эксперт, сформировавший оценку.
         public virtual Expert Expert { get; set; }
+
+        public void Update(Conclusion conclusion)
+        {
+            Comment = conclusion.Comment;
+            for (int i =0; i < 10; i++)
+                Values[i] = conclusion.Values[i];
+        }
     }
 }

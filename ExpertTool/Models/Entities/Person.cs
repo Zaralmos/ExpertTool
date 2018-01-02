@@ -34,5 +34,16 @@ namespace ExpertTool.Models
         public virtual Admin Admin { get; set; }
 
         public virtual ICollection<Conclusion> Conclusions { get; set; } = new List<Conclusion>();
+
+        public DateTime Published { get; set; }
+
+        public void Update(Person source)
+        {
+            if (!string.IsNullOrWhiteSpace(source.Name))
+                Name = source.Name;
+            Birthday = source.Birthday;
+            Position = source.Position;
+            Biography = source.Biography;
+        }
     }
 }

@@ -47,9 +47,6 @@ namespace ExpertTool
 
             app.UseSession();
 
-            //app.UseAuth();
-
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
