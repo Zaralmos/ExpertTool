@@ -10,11 +10,8 @@ namespace ExpertTool.Models
     /// <summary>
     /// Представляет обёртку над десятью показателдями при оценивании персоны
     /// </summary>
-    [ComplexType]
     public class Evaluation
     {
-        public int Id { get; set; }
-
         [NotMapped]
         public byte[] Values = new byte [10];
 

@@ -21,8 +21,6 @@ namespace ExpertTool.Models
 
         public DbSet<Conclusion> Conclusions { get; set; }
 
-        public DbSet<Evaluation> Evaluations { get; set; }
-
         public DbSet<Person> People { get; set; }
 
         [NotMapped]

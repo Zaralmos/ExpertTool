@@ -7,6 +7,6 @@ namespace ExpertTool.Views
 {
     public static class DateTimeExtensions
     {
-        public static string ToHtmlDateFormat(this DateTime date) => string.Join('-', date.ToShortDateString().Split('.').Reverse());
+        public static string ToHtmlDateFormat(this DateTime? date) => date!=null?string.Join('-', ((DateTime)date).ToShortDateString().Split('.').Reverse()):string.Empty;
     }
 }

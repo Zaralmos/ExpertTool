@@ -149,13 +149,13 @@ namespace ExpertTool.Controllers
             {
                 ViewBag.Person = _context.People.Find(id);
                 if (AuthorizedUser is Expert)
-                    ViewBag.Scales = _context.People.Find(id)?.Conclusions.FirstOrDefault(conclusion => conclusion.ExpertId == Id)?.Evaluation.Values;
+                    ViewBag.Conclusion = _context.Conclusions.FirstOrDefault(cion => cion.PersonId == id && cion.ExpertId == Id);
                 else
                 {
                     IEnumerable<byte> summary = new byte[10]; // Шо-то извращение какое-то. Если не лень, люди добрые, переделайте кусок кода, плз!..
                     IEnumerable<Conclusion> conclusions = _context.Conclusions.Where(conclusion => conclusion.PersonId == id);
                     foreach (Conclusion conclusion in conclusions)
-                        summary = summary.Zip(conclusion.Evaluation.Values, (a, b) => (byte)(a + b));
+                        summary = summary.Zip(conclusion.Values, (a, b) => (byte)(a + b));
                     ViewBag.Scales = summary.Select(evaluation => evaluation / conclusions.Count());
                 }
             }
@@ -172,15 +172,38 @@ namespace ExpertTool.Controllers
             }
             else
             {
-                person.AdminId = Id??0;
+                person.AdminId = Id ?? 0;
                 person.Published = DateTime.Now;
                 _context.People.Add(person);
-                
+
                 int i = _context.People.Count();
             }
             _context.SaveChanges();
             ViewBag.Person = person;
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult EvaluatePerson(Conclusion conclusion, int? id)
+        {
+            conclusion.Id = 0;
+            Conclusion DbConclusion = null;
+            if (id != null)
+                DbConclusion = _context.Conclusions.FirstOrDefault(cion => cion.PersonId == id && cion.ExpertId == Id);
+            if (DbConclusion == null)
+            {
+                DbConclusion = conclusion;
+                DbConclusion.ExpertId = Id??0;
+                DbConclusion.PersonId = id??0;
+                DbConclusion.Update(conclusion);
+                _context.Conclusions.Add(DbConclusion);
+            }
+            else
+            {
+                DbConclusion.Update(conclusion);
+            }
+            _context.SaveChanges();
+            return Redirect($"~/Home/Person/{DbConclusion.PersonId}");
         }
 
         #region Authentification

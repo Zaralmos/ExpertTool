@@ -25,7 +25,7 @@
                 </p>
                 }
                 </p>
-                <div class="published">@ViewBag.Person.Published</div>
+                <div class="published">@ViewBag.Person?.Published.ToShortDateString()</div>
             </div>
         </div>
     </div>
@@ -48,7 +48,7 @@ else if (ViewBag.User is Admin)
                 <hr>
                 Биография
                 <textarea name="Biography">@ViewBag.Person?.Biography</textarea>
-                <div class="published">@ViewBag.Person?.Published</div>
+                <div class="published">@ViewBag.Person?.Published.ToShortDateString()</div>
                 <input type="submit" value="Сохранить">
                 <input type="reset" value="Сбросить">
             </form>
@@ -68,8 +68,8 @@ else if (ViewBag.User is Admin)
                     @for (int i = 0; i < 10; i++)
                     {
                         <div class="scale">
-                            <input type="range" min="0" max="100" size="4" required name="@EvaluationExtensions.GetPropertyname(i)"> @EvaluationExtensions.GetRussianPropertyName(i)
-                            <div class="percent">@ViewBag.Scales?[i]]</div>
+                            <input type="range" min="0" max="100" size="4" required name="@EvaluationExtensions.GetPropertyname(i)" value="@ViewBag.Conclusion?.Values[i]"> @EvaluationExtensions.GetRussianPropertyName(i)
+                            <div class="percent">@ViewBag.Conclusion?.Values[i] %</div>
                         </div>
                     }
                     @*<div class="scale">
@@ -116,9 +116,9 @@ else if (ViewBag.User is Admin)
                 </div>
                 <div class="comment">
                     Комментарии
-                    <textarea name="comment" placeholder="При желании напишите здесь свои комментарии."></textarea>
+                    <textarea name="comment" placeholder="При желании напишите здесь свои комментарии.">@ViewBag.Conclusion?.Comment</textarea>
                 </div>
-                <input type="submit" value="Сохранить">
+                <input type="submit" value="Сохранить" formaction="~/Home/EvaluatePerson/@ViewBag.Person?.Id">
                 <input type="reset" forue="Очистить">
             </form>
         </div>
