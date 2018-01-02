@@ -31,22 +31,22 @@
         <form method="post">
             E-mail
             <br>
-            <input type="email" name="Email" required>
+            <input type="email" name="Email" value="@ViewBag.RegisteredUser?.Email" required>
             <br> Пароль
             <br>
-            <input type="text" name="Password" required>
+            <input type="text" name="Password" value="@ViewBag.RegisteredUser?.Password" required>
             <br> ФИО
             <br>
-            <input type="text" name="Name" required>
+            <input type="text" name="Name" value="@ViewBag.RegisteredUser?.Name" required>
             <br> Должность и место работы
             <br>
-            <input type="text" name="Position">
+            <input type="text" name="Position" value="@ViewBag.RegisteredUser?.Position">
             <br> Дата рождения
             <br>
-            <input type="date" name="Birthday">
+            <input type="date" name="Birthday" value="@DateTimeExtensions.ToHtmlDateFormat(ViewBag.RegisteredUser?.Birthday)">
             <br> Телефонный номер
             <br>
-            <input type="tel" name="Phone">
+            <input type="tel" name="Phone" value="@ViewBag.RegisteredUser?.Phone">
             <br>
             <input type="submit" value="Сохранить">
             <input type="reset" value="Очистить">

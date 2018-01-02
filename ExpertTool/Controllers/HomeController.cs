@@ -50,8 +50,9 @@ namespace ExpertTool.Controllers
         {
             AuthorizedUser.Update(user);
             _context.SaveChanges();
+            ViewBag.Success = "Персональные данные сохранены.";
             ViewBag.User = AuthorizedUser;
-            return Redirect("~/Home/Profile");
+            return View();
         }
 
         /// <summary>
@@ -93,6 +94,7 @@ namespace ExpertTool.Controllers
         [HttpPost]
         public IActionResult Register(User user, string role)
         {
+            ViewBag.RegisteredUser = user;
             try
             {
                 ViewBag.role = role;
@@ -156,7 +158,7 @@ namespace ExpertTool.Controllers
                     IEnumerable<Conclusion> conclusions = _context.Conclusions.Where(conclusion => conclusion.PersonId == id);
                     foreach (Conclusion conclusion in conclusions)
                         summary = summary.Zip(conclusion.Values, (a, b) => (byte)(a + b));
-                    ViewBag.Scales = summary.Select(evaluation => evaluation / conclusions.Count());
+                    ViewBag.Scales = summary.Select(evaluation => evaluation / conclusions.Count()).ToList();
                 }
             }
 
@@ -179,6 +181,7 @@ namespace ExpertTool.Controllers
                 int i = _context.People.Count();
             }
             _context.SaveChanges();
+            ViewBag.Success = "Изменения успешно сохранены";
             ViewBag.Person = person;
             return View();
         }
@@ -203,7 +206,8 @@ namespace ExpertTool.Controllers
                 DbConclusion.Update(conclusion);
             }
             _context.SaveChanges();
-            return Redirect($"~/Home/Person/{DbConclusion.PersonId}");
+            string stringId = id == null ? string.Empty : id.ToString();
+            return Redirect($"~/Home/Person/{stringId}");
         }
 
         #region Authentification

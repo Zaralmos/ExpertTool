@@ -1,60 +1,69 @@
-﻿@{ 
+﻿@{
     ViewData["Title"] = ViewBag.Person?.Name;
 }
 
-
 @if (ViewBag.User is Expert)
-{
-<div class="block">
-    <div class="block-title">
-        Персона
-    </div>
-    <div class="block-content">
-        <div class="person-detailed">
-            <h2 class="name">
-                @ViewBag.Person?.Name
-            </h2>
-            <div class="position">Должность: @ViewBag.Person?.Position</div>
-            <div class="birthday">Дата рождения: @ViewBag.Person?.Birthday.ToShortDateString()</div>
-            <hr>
-            <p>
-                @foreach (string paragraph in ViewBag.Person.Biography.Split('\n'))
-                {
-                <p>
-                    @paragraph
-                </p>
-                }
-                </p>
-                <div class="published">@ViewBag.Person?.Published.ToShortDateString()</div>
-            </div>
-        </div>
-    </div>
-}
-else if (ViewBag.User is Admin)
 {
     <div class="block">
         <div class="block-title">
-            Ввод данных о персоне
+            Персона
         </div>
         <div class="block-content">
-            <form method="post">
-                <input type="number" name="Id" value="@ViewBag.Person?.Id" hidden />
-                Имя <br>
-                <input type="text" name="Name" value="@ViewBag.Person?.Name" />
-                Должность<br>
-                <input type="text" name="Position" value="@ViewBag.Person?.Position" />
-                дата рождения<br>
-                <input type="date" name="Birthday" value="@DateTimeExtensions.ToHtmlDateFormat(ViewBag.Person?.Birthday)" />
+            <div class="person-detailed">
+                <h2 class="name">
+                    @ViewBag.Person?.Name
+                </h2>
+                <div class="position">Должность: @ViewBag.Person?.Position</div>
+                <div class="birthday">Дата рождения: @ViewBag.Person?.Birthday.ToShortDateString()</div>
                 <hr>
-                Биография
-                <textarea name="Biography">@ViewBag.Person?.Biography</textarea>
-                <div class="published">@ViewBag.Person?.Published.ToShortDateString()</div>
-                <input type="submit" value="Сохранить">
-                <input type="reset" value="Сбросить">
-            </form>
+                <p>
+                    @foreach (string paragraph in ViewBag.Person.Biography.Split('\n'))
+                    {
+                    <p>
+                        @paragraph
+                    </p>
+                }
+                    </p>
+                    <div class="published">@ViewBag.Person?.Published.ToShortDateString()</div>
+                </div>
+            </div>
         </div>
-    </div>
-}
+    }
+    else if (ViewBag.User is Admin)
+    {
+        <div class="block">
+            <div class="block-title">
+                Ввод данных о персоне
+            </div>
+            <div class="block-content">
+                @if (ViewBag.Error != null)
+                {
+                    <span class="error">@ViewBag.Error</span>
+                    <hr>
+                }
+                @if (ViewBag.Success != null)
+                {
+                    <span class="success">@ViewBag.Success</span>
+                    <hr>
+                }
+                <form method="post">
+                    <input type="number" name="Id" value="@ViewBag.Person?.Id" hidden />
+                    ФИО <br>
+                    <input type="text" name="Name" value="@ViewBag.Person?.Name" />
+                    Должность<br>
+                    <input type="text" name="Position" value="@ViewBag.Person?.Position" />
+                    дата рождения<br>
+                    <input type="date" name="Birthday" value="@DateTimeExtensions.ToHtmlDateFormat(ViewBag.Person?.Birthday)" />
+                    <hr>
+                    Биография
+                    <textarea name="Biography">@ViewBag.Person?.Biography</textarea>
+                    <div class="published">@ViewBag.Person?.Published.ToShortDateString()</div>
+                    <input type="submit" value="Сохранить">
+                    <input type="reset" value="Сбросить">
+                </form>
+            </div>
+        </div>
+    }
 
 @if (ViewBag.User is Expert)
 {
@@ -63,6 +72,16 @@ else if (ViewBag.User is Admin)
             Экспертная оценка
         </div>
         <div class="block-content">
+            @if (ViewBag.Error != null)
+            {
+                <span class="error">@ViewBag.Error</span>
+                <hr>
+            }
+            @if (ViewBag.Success != null)
+            {
+                <span class="success">@ViewBag.Success</span>
+                <hr>
+            }
             <form class="evaluation" name="evaluation" method="post" action="task">
                 <div class="scales">
                     @for (int i = 0; i < 10; i++)
@@ -72,48 +91,7 @@ else if (ViewBag.User is Admin)
                             @EvaluationExtensions.GetRussianPropertyName(i)
                             <div class="percent">@ViewBag.Conclusion?.Values[i] %</div>
                         </div>
-                    }
-                    @*<div class="scale">
-                            <input type="range" min="0" max="100" size="4" required> Гипохондрия
-                            <div class="percent">100%</div>
-                        </div>
-                        <div class="scale">
-                            <input type="range" min="0" max="100" size="4" required> Депрессия
-                            <div class="percent">50%</div>
-                        </div>
-                        <div class="scale">
-                            <input type="range" min="0" max="100" size="4" required> Истерия
-                            <div class="percent">45%</div>
-                        </div>
-                        <div class="scale">
-                            <input type="range" min="0" max="100" size="4" required> Психопатические отклонения
-                            <div class="percent">47%</div>
-                        </div>
-                        <div class="scale">
-                            <input type="range" min="0" max="100" size="4" required> Феминность - мускулинность
-                            <div class="percent">71%</div>
-                        </div>
-
-                        <div class="scale">
-                            <input type="range" min="0" max="100" size="4" required> Паранойя
-                            <div class="percent">82%</div>
-                        </div>
-                        <div class="scale">
-                            <input type="range" min="0" max="100" size="4" required> Психастения
-                            <div class="percent">34%</div>
-                        </div>
-                        <div class="scale">
-                            <input type="range" min="0" max="100" size="4" required> Шизофрения
-                            <div class="percent">20%</div>
-                        </div>
-                        <div class="scale">
-                            <input type="range" min="0" max="100" size="4" required> Гипомания
-                            <div class="percent">100%</div>
-                        </div>
-                        <div class="scale">
-                            <input type="range" min="0" max="100" size="4" required> Социальность - интроверсия
-                            <div class="percent">50%</div>
-                        </div>*@
+                    }                    
                 </div>
                 <div class="comment">
                     Комментарии
@@ -132,57 +110,14 @@ else if (ViewBag.User is Admin && ViewBag.Person != null)
             Результат экспертной оценки
         </div>
         <div class="block-content">
+            @for (int i = 0 ; i < 10; i++)
+            {
             <div class="scale">
-                <div class="column" style="width: 50%"></div>
-                Гипохондрия
-                <div class="percent">100%</div>
+                <div class="column" style="width: @ViewBag.Scales[i]%"></div>
+                @EvaluationExtensions.GetRussianPropertyName(i)
+                <div class="percent">@ViewBag.Scales[i] %</div>
             </div>
-            <div class="scale">
-                <div class="column" style="width: 25%"></div>
-                Депрессия
-                <div class="percent">50%</div>
-            </div>
-            <div class="scale">
-                <div class="column" style="width: 64%"></div>
-                Истерия
-                <div class="percent">45%</div>
-            </div>
-            <div class="scale">
-                <div class="column" style="width: 78%"></div>
-                Психопатические отклонения
-                <div class="percent">47%</div>
-            </div>
-            <div class="scale">
-                <div class="column" style="width: 50%"></div>
-                Феминность - мускулинность
-                <div class="percent">71%</div>
-            </div>
-
-            <div class="scale">
-                <div class="column" style="width: 50%"></div>
-                Паранойя
-                <div class="percent">82%</div>
-            </div>
-            <div class="scale">
-                <div class="column" style="width: 52%"></div>
-                Психастения
-                <div class="percent">34%</div>
-            </div>
-            <div class="scale">
-                <div class="column" style="width: 78%"></div>
-                Шизофрения
-                <div class="percent">20%</div>
-            </div>
-            <div class="scale">
-                <div class="column" style="width: 28%"></div>
-                Гипомания
-                <div class="percent">100%</div>
-            </div>
-            <div class="scale">
-                <div class="column" style="width: 45%"></div>
-                Социальность - интроверсия
-                <div class="percent">50%</div>
-            </div>
+            }           
         </div>
     </div>
 }
