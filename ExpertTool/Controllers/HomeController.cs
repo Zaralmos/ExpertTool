@@ -154,11 +154,17 @@ namespace ExpertTool.Controllers
                     ViewBag.Conclusion = _context.Conclusions.FirstOrDefault(cion => cion.PersonId == id && cion.ExpertId == Id);
                 else
                 {
-                    IEnumerable<byte> summary = new byte[10]; // Шо-то извращение какое-то. Если не лень, люди добрые, переделайте кусок кода, плз!..
                     IEnumerable<Conclusion> conclusions = _context.Conclusions.Where(conclusion => conclusion.PersonId == id);
-                    foreach (Conclusion conclusion in conclusions)
-                        summary = summary.Zip(conclusion.Values, (a, b) => (byte)(a + b));
-                    ViewBag.Scales = summary.Select(evaluation => evaluation / conclusions.Count()).ToList();
+                    if (conclusions != null && conclusions.Count() > 0)
+                    {
+                        IEnumerable<byte> summary = new byte[10]; // Шо-то извращение какое-то. Если не лень, люди добрые, переделайте кусок кода, плз!..
+                        foreach (Conclusion conclusion in conclusions)
+                            summary = summary.Zip(conclusion.Values, (a, b) => (byte)(a + b));
+                        ViewBag.Scales = summary.Select(evaluation => evaluation / conclusions.Count()).ToList();
+                        ViewBag.Conclusions = conclusions;
+                    }
+                    else
+                        ViewBag.Error = $"В системе нет ни одной экспертной оценки для персоны {ViewBag.Person?.Name}!";
                 }
             }
 
@@ -181,9 +187,10 @@ namespace ExpertTool.Controllers
                 int i = _context.People.Count();
             }
             _context.SaveChanges();
-            ViewBag.Success = "Изменения успешно сохранены";
-            ViewBag.Person = person;
-            return View();
+            //ViewBag.Success = "Изменения успешно сохранены";
+            //ViewBag.Person = person;
+            string stringId = id == null ? string.Empty : id.ToString();
+            return Redirect($"~/Home/Person/{stringId}");
         }
 
         [HttpPost]

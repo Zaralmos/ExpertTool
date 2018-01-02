@@ -72,16 +72,6 @@
             Экспертная оценка
         </div>
         <div class="block-content">
-            @if (ViewBag.Error != null)
-            {
-                <span class="error">@ViewBag.Error</span>
-                <hr>
-            }
-            @if (ViewBag.Success != null)
-            {
-                <span class="success">@ViewBag.Success</span>
-                <hr>
-            }
             <form class="evaluation" name="evaluation" method="post" action="task">
                 <div class="scales">
                     @for (int i = 0; i < 10; i++)
@@ -91,7 +81,7 @@
                             @EvaluationExtensions.GetRussianPropertyName(i)
                             <div class="percent">@ViewBag.Conclusion?.Values[i] %</div>
                         </div>
-                    }                    
+                    }
                 </div>
                 <div class="comment">
                     Комментарии
@@ -110,14 +100,49 @@ else if (ViewBag.User is Admin && ViewBag.Person != null)
             Результат экспертной оценки
         </div>
         <div class="block-content">
-            @for (int i = 0 ; i < 10; i++)
+            @if (ViewBag.Error != null)
             {
-            <div class="scale">
-                <div class="column" style="width: @ViewBag.Scales[i]%"></div>
-                @EvaluationExtensions.GetRussianPropertyName(i)
-                <div class="percent">@ViewBag.Scales[i] %</div>
-            </div>
-            }           
+                <span class="error">@ViewBag.Error</span>
+            }
+            else
+            {
+                @for (int i = 0; i < 10; i++)
+                {
+                    <div class="scale">
+                        <div class="column" style="width: @ViewBag.Scales[i]%"></div>
+                        @EvaluationExtensions.GetRussianPropertyName(i)
+                        <div class="percent">@ViewBag.Scales[i] %</div>
+                    </div>
+                }
+            }
         </div>
     </div>
+
+    if (ViewBag.Conclusions != null && (ViewBag.Conclusions as IEnumerable<Conclusion>).Any(cion => !string.IsNullOrWhiteSpace(cion.Comment)))
+    {
+    <div class="block">
+        <div class="block-title">
+            Комментарии экспертов
+        </div>
+        <div class="block-content">
+            <ul>
+                @foreach (Conclusion conclusion in ViewBag.Conclusions)
+                {
+                    if (!string.IsNullOrWhiteSpace(conclusion.Comment))
+                    {
+                        <li>
+                            <h2 class="name">@conclusion.Expert.Name</h2>
+                            @foreach (string paragraph in conclusion.Comment.Split('\n'))
+                            {
+                                <p>
+                                    @paragraph
+                                </p>
+                            }
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+    }
 }
