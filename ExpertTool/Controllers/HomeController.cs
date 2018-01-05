@@ -38,6 +38,13 @@ namespace ExpertTool.Controllers
         [HttpGet]
         public IActionResult Profile()
         {
+            if(AuthorizedUser is Admin)
+            {
+                ViewBag.Experts = _context.Experts;
+                ViewBag.Admins = _context.Admins;
+                ViewBag.AdminError = Messages.AdminsNotFound;
+                ViewBag.ExpertsError = Messages.ExpertsNotFound;
+            }
             return View();
         }
 
@@ -51,7 +58,7 @@ namespace ExpertTool.Controllers
         {
             AuthorizedUser.Update(user);
             _context.SaveChanges();
-            ViewBag.Success = MessagesSingleton.Messages.Success;
+            ViewBag.Success = Messages.Success;
             ViewBag.User = AuthorizedUser;
             return View();
         }
@@ -100,11 +107,11 @@ namespace ExpertTool.Controllers
             {
                 ViewBag.role = role;
                 if (role != nameof(Admin) && role != nameof(Expert))
-                    ViewBag.Error = MessagesSingleton.Messages.Unknow;
+                    ViewBag.Error = Messages.Unknow;
                 else if (_context.Users.Select(member => member.Email).Contains(user.Email))
-                    ViewBag.Error = MessagesSingleton.Messages.Exist;
+                    ViewBag.Error = Messages.Exist;
                 else if (user.Password.Length < 6 || user.Password.Length > 20)
-                    ViewBag.Error = MessagesSingleton.Messages.UncorrectPassLen;
+                    ViewBag.Error = Messages.UncorrectPassLen;
                 else
                 {
                     User DbUser = null;
@@ -117,12 +124,12 @@ namespace ExpertTool.Controllers
                     _context.Add(DbUser);
                     _context.SaveChanges();
                     ViewBag.RegisteredUser = DbUser;
-                    ViewBag.Success = MessagesSingleton.Messages.RegistSuc;
+                    ViewBag.Success = Messages.RegistSuc;
                 }
             }
             catch (Exception)
             {
-                ViewBag.Error = MessagesSingleton.Messages.RegistErr;
+                ViewBag.Error = Messages.RegistErr;
             }
             return View();
         }
@@ -264,7 +271,7 @@ namespace ExpertTool.Controllers
             {
                 ViewBag.Password = password;
                 ViewBag.Email = email;
-                ViewBag.Error = MessagesSingleton.Messages.UserNotFound;
+                ViewBag.Error = Messages.UserNotFound;
                 return View();
             }
             return Redirect("~/Home/Index");

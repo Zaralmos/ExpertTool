@@ -6,51 +6,6 @@
     ViewData["Title"] = "Личный кабинет";
 }
 
-
-@if (ViewBag.User is Admin)
-{
-
-    <div class="block">
-        <div class="block-title">
-            Панель администратора
-        </div>
-        <div class="block-content admin-panel">
-            <p>
-                Нажмите
-                <a href="~/Home/Person">
-                    <input type="button" value="Добавить персону">
-                </a>
-                , чтобы добавить новую персону для экспертной оценки.
-            </p>
-            <p>
-                Чтобы посмотреть список всех персон, вынесенных на рассмотрение экспертам, перейдите на главную страницу или нажмите
-                <a href="~/Home/Index">
-                    <input type="button" value="Список персон">
-                </a>
-            </p>
-            <hr>
-            <p>
-                Для того чтобы зарегистрировать нового эксперта, нажмите
-                <a href="~/Home/Register?role=Expert">
-                    <input type="button" value="Зарегистрировать эксперта">
-                </a>
-            </p>
-            <p>
-                Чтобы создать ещё одну учётную запись администратора, нажмите
-                <a href="~/Home/Register?role=Admin">
-                    <input type="button" value="Зарегистрировать администратора">
-                </a>
-            </p>
-            <p>
-                Чтобы посмотреть список всех зарегистрированных пользователей, нажмите
-                <a href="~/Home/Users">
-                    <input type="button" value="Список пользователей">
-                </a>
-            </p>
-        </div>
-    </div>
-}
-
 <div class="block">
     <div class="block-title">
         Персональные данные
@@ -87,11 +42,48 @@
     </div>
 </div>
 
-<div class="block">
-    <div class="block-content">
-        Выход из аккаунта происходит автоматически после окончания сессии. Чтобы выйти принудительно, нажмите
-        <a href="~/Home/DeAuth">
-            <input type="button" value="Выйти">
-        </a>
-    </div>
+@if (ViewBag.User is Admin)
+{
+<div class="block-content">
+    @if (ViewBag.Experts != null)
+    {
+    <table class="equal-width-cols">
+        <tr><th>Имя</th><th>Должность</th><th>E-mail</th></tr>
+        @foreach (Expert exp in ViewBag.Experts)
+        {
+        <tr><td>@exp.Name</td><td>@exp.Position</td><td>@exp.Email</td></tr>
+        }
+    </table>
+    }
+    else
+    {
+        <text>@ViewBag.ExpertError</text>
+    }
 </div>
+
+<div class="block-content">
+      @if (ViewBag.Admins != null)
+      {
+          <table class="equal-width-cols">
+              <tr><th>Имя</th><th>Должность</th><th>E-mail</th></tr>
+                @foreach (Admin admin in ViewBag.Admins)
+                {
+                    <tr><td>@admin.Name</td><td>@admin.Position</td><td>@admin.Email</td></tr>
+                }
+          </table>
+      }
+       else
+      {
+          <text>@ViewBag.AdminError</text>
+      }
+ </div>
+ }
+
+        <div class="block">
+            <div class="block-content">
+                Выход из аккаунта происходит автоматически после окончания сессии. Чтобы выйти принудительно, нажмите
+                <a href="~/Home/DeAuth">
+                    <input type="button" value="Выйти">
+                </a>
+            </div>
+        </div>
