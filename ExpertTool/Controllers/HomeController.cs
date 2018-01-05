@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ExpertTool.Models;
+using ExpertTool.Models.Helpers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -50,7 +51,7 @@ namespace ExpertTool.Controllers
         {
             AuthorizedUser.Update(user);
             _context.SaveChanges();
-            ViewBag.Success = "Персональные данные сохранены.";
+            ViewBag.Success = MessagesSingleton.Messages.Success;
             ViewBag.User = AuthorizedUser;
             return View();
         }
@@ -99,11 +100,11 @@ namespace ExpertTool.Controllers
             {
                 ViewBag.role = role;
                 if (role != nameof(Admin) && role != nameof(Expert))
-                    ViewBag.Error = "Неизвестная роль пользователя! Попробуйте ещё раз.";
+                    ViewBag.Error = MessagesSingleton.Messages.Unknow;
                 else if (_context.Users.Select(member => member.Email).Contains(user.Email))
-                    ViewBag.Error = "В системе уже зарегистрирован пользователь с таким E-mail!";
+                    ViewBag.Error = MessagesSingleton.Messages.Exist;
                 else if (user.Password.Length < 6 || user.Password.Length > 20)
-                    ViewBag.Error = "Длина пароля должна быть от 6 до 20 символов!";
+                    ViewBag.Error = MessagesSingleton.Messages.UncorrectPassLen;
                 else
                 {
                     User DbUser = null;
@@ -116,12 +117,12 @@ namespace ExpertTool.Controllers
                     _context.Add(DbUser);
                     _context.SaveChanges();
                     ViewBag.RegisteredUser = DbUser;
-                    ViewBag.Success = "Новый пользователь успешно зарегистрирован!";
+                    ViewBag.Success = MessagesSingleton.Messages.RegistSuc;
                 }
             }
             catch (Exception)
             {
-                ViewBag.Error = "При регистрации призошла ошибка! Попробуйте ещё раз.";
+                ViewBag.Error = MessagesSingleton.Messages.RegistErr;
             }
             return View();
         }
@@ -263,7 +264,7 @@ namespace ExpertTool.Controllers
             {
                 ViewBag.Password = password;
                 ViewBag.Email = email;
-                ViewBag.Error = "Сочетание E-mail и пароля не найдено. Попробуйте снова.";
+                ViewBag.Error = MessagesSingleton.Messages.UserNotFound;
                 return View();
             }
             return Redirect("~/Home/Index");
