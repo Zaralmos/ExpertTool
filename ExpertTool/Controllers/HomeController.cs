@@ -135,23 +135,62 @@ namespace ExpertTool.Controllers
         }
 
         /// <summary>
-        /// Представляет администратору список всех пользователей, зарегистрированныъх в системе.
+        /// Выводит данные профиля пользователя
         /// </summary>
         /// <returns></returns>
-        public IActionResult Users()
+        [HttpGet]
+        public IActionResult RegisteredUser(string role, int id)
         {
             IActionResult result = null;
             if (AuthorizedUser is Admin)
             {
-                ViewBag.Admins = _context.Admins;
-                ViewBag.Experts = _context.Experts;
+                User user = null;
+                if (role == Messages.Admin)
+                {
+                    user = _context.Admins.Find(id);
+                }
+                else if (role == Messages.Expert)
+                {
+                    user = _context.Experts.Find(id);
+                }
+                ViewBag.User = user;
                 result = View();
             }
             else
+            {
                 result = Forbid();
+            }
             return result;
         }
 
+        [HttpPost]
+        public IActionResult RegisteredUser(User user, string role, int id)
+        {
+            IActionResult result = null;
+            if (AuthorizedUser is Admin)
+            {
+                User dbUser = null;
+                if (role == Messages.Admin)
+                {
+                    dbUser = _context.Admins.Find(id);
+                }
+                else if (role == Messages.Expert)
+                {
+                    dbUser = _context.Experts.Find(id);
+                }
+                if(dbUser != null)
+                {
+                    dbUser.Update(user);
+                    _context.SaveChanges();
+                }
+                result = Redirect("~/Home/Profile");
+            }
+            else
+            {
+                result = Forbid();
+            }
+            return result;
+        }
         [HttpGet]
         public IActionResult Person(int? id)
         {
@@ -175,7 +214,6 @@ namespace ExpertTool.Controllers
                         ViewBag.Error = $"В системе нет ни одной экспертной оценки для персоны {ViewBag.Person?.Name}!";
                 }
             }
-
             return View();
         }
 

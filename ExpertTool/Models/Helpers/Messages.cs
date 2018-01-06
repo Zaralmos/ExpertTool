@@ -25,5 +25,9 @@ namespace ExpertTool.Models.Helpers
         public static string AdminsNotFound { get; } = "Админы в системе не найдены";
 
         public static string ExpertsNotFound { get; } = "Эксперты в системе не найдены";
+
+        public static string Admin { get; } = "Admin";
+
+        public static string Expert { get; } = "Expert";
     }
 }
