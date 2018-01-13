@@ -120,29 +120,29 @@ else if (ViewBag.User is Admin && ViewBag.Person != null)
 
     if (ViewBag.Conclusions != null && (ViewBag.Conclusions as IEnumerable<Conclusion>).Any(cion => !string.IsNullOrWhiteSpace(cion.Comment)))
     {
-    <div class="block">
-        <div class="block-title">
-            Комментарии экспертов
-        </div>
-        <div class="block-content">
-            <ul>
-                @foreach (Conclusion conclusion in ViewBag.Conclusions)
-                {
-                    if (!string.IsNullOrWhiteSpace(conclusion.Comment))
+        <div class="block">
+            <div class="block-title">
+                Комментарии экспертов
+            </div>
+            <div class="block-content">
+                <ul>
+                    @foreach (Conclusion conclusion in ViewBag.Conclusions)
                     {
-                        <li>
-                            <h2 class="name">@conclusion.Expert.Name</h2>
-                            @foreach (string paragraph in conclusion.Comment.Split('\n'))
-                            {
-                                <p>
-                                    @paragraph
-                                </p>
-                            }
-                        </li>
+                        if (!string.IsNullOrWhiteSpace(conclusion.Comment))
+                        {
+                            <li>
+                                <h2 class="name">@conclusion.Expert.Name</h2>
+                                @foreach (string paragraph in conclusion.Comment.Split('\n'))
+                                {
+                                    <p>
+                                        @paragraph
+                                    </p>
+                                }
+                            </li>
+                        }
                     }
-                }
-            </ul>
+                </ul>
+            </div>
         </div>
-    </div>
     }
 }
