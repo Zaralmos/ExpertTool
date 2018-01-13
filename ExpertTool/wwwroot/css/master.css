@@ -176,6 +176,22 @@ input, textarea {
 
 table {
     width: 100%;
+    border: 1px;
+    border-spacing: 1px;
+}
+
+td, th{
+     border: 1px solid #00cfc2;
+     text-align: center;
+}
+
+.equal-width-cols {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.equal-width-cols td {
+    width: 100%;
 }
 
 input[type="range"] {

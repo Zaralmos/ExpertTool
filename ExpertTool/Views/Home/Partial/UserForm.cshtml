@@ -1,0 +1,22 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<form method="post">
+    ФИО<br />
+    <input type="text" name="Name" value="@ViewBag.User?.Name" /><br />
+    Должность и место работы<br />
+    <input type="text" name="Position" value="@ViewBag.User?.Position" /><br />
+    Дата рождения<br />
+    <input type="date" name="Birthday" value="@ExpertTool.Views.DateTimeExtensions.ToHtmlDateFormat(ViewBag.User?.Birthday)" /><br />
+    Телефон <br />
+    <input type="tel" name="Phone" value="@ViewBag.User?.Phone" /><br />
+    E-mail <br />
+    <text>@ViewBag.User?.Email</text><br />
+    @if (ViewBag.User is Expert)
+    {
+        <text> Для того, чтобы поменять пароль, свяжитесь с администратором. (@ViewBag.User?.Admin?.Phone) </text> <br>
+    }
+    <input type="submit" value="Сохранить">
+    <input type="reset" value="Сбросить">
+</form>
