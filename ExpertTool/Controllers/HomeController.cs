@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ExpertTool.Models;
+using ExpertTool.Models.Helpers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -37,6 +38,13 @@ namespace ExpertTool.Controllers
         [HttpGet]
         public IActionResult Profile()
         {
+            if(AuthorizedUser is Admin)
+            {
+                ViewBag.AdminError = Messages.AdminsNotFound;
+                ViewBag.ExpertsError = Messages.ExpertsNotFound;
+                ViewBag.Admins = _context.Admins.ToList();
+                ViewBag.Experts = _context.Experts.ToList();
+            }
             return View();
         }
 
@@ -50,7 +58,7 @@ namespace ExpertTool.Controllers
         {
             AuthorizedUser.Update(user);
             _context.SaveChanges();
-            ViewBag.Success = "Персональные данные сохранены.";
+            ViewBag.Success = Messages.Success;
             ViewBag.User = AuthorizedUser;
             return View();
         }
@@ -99,11 +107,11 @@ namespace ExpertTool.Controllers
             {
                 ViewBag.role = role;
                 if (role != nameof(Admin) && role != nameof(Expert))
-                    ViewBag.Error = "Неизвестная роль пользователя! Попробуйте ещё раз.";
+                    ViewBag.Error = Messages.Unknow;
                 else if (_context.Users.Select(member => member.Email).Contains(user.Email))
-                    ViewBag.Error = "В системе уже зарегистрирован пользователь с таким E-mail!";
+                    ViewBag.Error = Messages.Exist;
                 else if (user.Password.Length < 6 || user.Password.Length > 20)
-                    ViewBag.Error = "Длина пароля должна быть от 6 до 20 символов!";
+                    ViewBag.Error = Messages.UncorrectPassLen;
                 else
                 {
                     User DbUser = null;
@@ -116,31 +124,99 @@ namespace ExpertTool.Controllers
                     _context.Add(DbUser);
                     _context.SaveChanges();
                     ViewBag.RegisteredUser = DbUser;
-                    ViewBag.Success = "Новый пользователь успешно зарегистрирован!";
+                    ViewBag.Success = Messages.RegistSuc;
                 }
             }
             catch (Exception)
             {
-                ViewBag.Error = "При регистрации призошла ошибка! Попробуйте ещё раз.";
+                ViewBag.Error = Messages.RegistErr;
             }
             return View();
         }
 
         /// <summary>
-        /// Представляет администратору список всех пользователей, зарегистрированныъх в системе.
+        /// Выводит данные профиля пользователя
         /// </summary>
         /// <returns></returns>
-        public IActionResult Users()
+        [HttpGet]
+        public IActionResult RegisteredUser(string role, int id)
         {
             IActionResult result = null;
             if (AuthorizedUser is Admin)
             {
-                ViewBag.Admins = _context.Admins;
-                ViewBag.Experts = _context.Experts;
+                User user = null;
+                if (role == Messages.Admin)
+                {
+                    user = _context.Admins.Find(id);
+                }
+                else if (role == Messages.Expert)
+                {
+                    user = _context.Experts.Find(id);
+                }
+                ViewBag.User = user;
                 result = View();
             }
             else
+            {
                 result = Forbid();
+            }
+            return result;
+        }
+
+        [HttpPost]
+        public IActionResult RegisteredUser(User user, string role, int id)
+        {
+            IActionResult result = null;
+            if (AuthorizedUser is Admin)
+            {
+                User dbUser = null;
+                if (role == Messages.Admin)
+                {
+                    dbUser = _context.Admins.Find(id);
+                }
+                else if (role == Messages.Expert)
+                {
+                    dbUser = _context.Experts.Find(id);
+                }
+                if(dbUser != null)
+                {
+                    dbUser.Update(user);
+                }
+                result = Redirect("~/Home/Profile");
+            }
+            else
+            {
+                result = Forbid();
+            }
+            return result;
+        }
+
+        [HttpGet]
+        public IActionResult DeleteUser(string role, int id)
+        {
+            IActionResult result = null;
+            if (AuthorizedUser is Admin)
+            {
+                User user = null;
+                if (role == Messages.Admin)
+                {
+                    user = _context.Admins.Find(id);
+                }
+                else if (role == Messages.Expert)
+                {
+                    user = _context.Experts.Find(id);
+                }
+                if (user != null)
+                {
+                    _context.Remove(user);
+                    _context.SaveChanges();
+                }
+                result = Redirect("~/Home/Profile");
+            }
+            else
+            {
+                result = Forbid();
+            }
             return result;
         }
 
@@ -167,7 +243,6 @@ namespace ExpertTool.Controllers
                         ViewBag.Error = $"В системе нет ни одной экспертной оценки для персоны {ViewBag.Person?.Name}!";
                 }
             }
-
             return View();
         }
 
@@ -263,7 +338,7 @@ namespace ExpertTool.Controllers
             {
                 ViewBag.Password = password;
                 ViewBag.Email = email;
-                ViewBag.Error = "Сочетание E-mail и пароля не найдено. Попробуйте снова.";
+                ViewBag.Error = Messages.UserNotFound;
                 return View();
             }
             return Redirect("~/Home/Index");
