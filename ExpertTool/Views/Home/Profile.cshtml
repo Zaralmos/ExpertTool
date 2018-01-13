@@ -28,6 +28,20 @@
 @if (ViewBag.User is Admin)
 {
 <div class="block">
+    <div class="block-title">
+        Персоны
+    </div>
+    <div class="block-content">
+        <a href="~/Home/Person">
+            <input type="button" value="Добавить персону">
+        </a>
+    </div>
+</div>
+
+<div class="block">
+    <div class="block-title">
+        <text>Experts</text>
+    </div>
     <div class="block-content">
         @if (ViewBag.Experts != null)
         {
@@ -37,19 +51,27 @@
                         <th>Имя</th>
                         <th>Должность</th>
                         <th>E-mail</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                 @foreach (Expert exp in ViewBag.Experts)
                 {
                     <tr>
-                        <td>@Html.ActionLink(exp.Name, "RegisteredUser", "Home", new { role = "Admin", id = exp.Id}, null)</td>
+                        <td>@exp.Name</td>
                         <td>@exp.Position</td>
                         <td>@exp.Email</td>
+                        <td>
+                            @Html.ActionLink("Изменить", "RegisteredUser", "Home", new { role = "Expert", id = exp.Id }, null)|
+                            @Html.ActionLink("Удалить", "DeleteUser", "Home", new { role = "Expert", id = exp.Id }, null)
+                        </td>
                     </tr>
                 }
                 </tbody>
             </table>
+           <a href="@Url.Action("Register", "Home", new { role = "Expert"})">
+               <input type="button" value="Добавить" />
+           </a>
         }
         else
         {
@@ -59,32 +81,43 @@
 </div>
 
 <div class="block">
+        <div class="block-title">
+             <text>Админы</text>
+        </div>
     <div class="block-content">
         @if (ViewBag.Admins != null)
-        {
-            <table class="equal-width-cols">
-                <thead>
-                    <tr>
-                        <th>Имя</th>
-                        <th>Должность</th>
-                        <th>E-mail</th>
-                    </tr>
-                <tbody>
+    {
+        <table class="equal-width-cols">
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Должность</th>
+                    <th>E-mail</th>
+                    <th></th>
+                </tr>
+            <tbody>
                 @foreach (Admin admin in ViewBag.Admins)
-                {
-                    <tr>
-                        <td>@admin.Name</td>
-                        <td>@admin.Position</td>
-                        <td>@admin.Email</td>
-                    </tr>
-                }
-                </tbody>
-            </table>
+            {
+                <tr>
+                    <td>@admin.Name</td>
+                    <td>@admin.Position</td>
+                    <td>@admin.Email</td>
+                    <td>
+                        @Html.ActionLink("Изменить", "RegisteredUser", "Home", new { role = "Admin", id = admin.Id }, null)|
+                        @Html.ActionLink("Удаить", "DeleteUser", "Home", new { role = "Admin", id = admin.Id }, null)
+                    </td>
+                </tr>
         }
-        else
-        {
-            <text>@ViewBag.AdminError</text>
-        }
+            </tbody>
+        </table>
+        <a href="@Url.Action("Register", "Home", new { role = "Admin"})">
+            <input type="button" value="Добавить" />
+        </a>
+}
+else
+{
+    <text>@ViewBag.AdminError</text>
+}
     </div>
 </div>
  }

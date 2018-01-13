@@ -40,10 +40,10 @@ namespace ExpertTool.Controllers
         {
             if(AuthorizedUser is Admin)
             {
-                ViewBag.Experts = _context.Experts;
-                ViewBag.Admins = _context.Admins;
                 ViewBag.AdminError = Messages.AdminsNotFound;
                 ViewBag.ExpertsError = Messages.ExpertsNotFound;
+                ViewBag.Admins = _context.Admins.ToList();
+                ViewBag.Experts = _context.Experts.ToList();
             }
             return View();
         }
@@ -181,6 +181,34 @@ namespace ExpertTool.Controllers
                 if(dbUser != null)
                 {
                     dbUser.Update(user);
+                }
+                result = Redirect("~/Home/Profile");
+            }
+            else
+            {
+                result = Forbid();
+            }
+            return result;
+        }
+
+        [HttpGet]
+        public IActionResult DeleteUser(string role, int id)
+        {
+            IActionResult result = null;
+            if (AuthorizedUser is Admin)
+            {
+                User user = null;
+                if (role == Messages.Admin)
+                {
+                    user = _context.Admins.Find(id);
+                }
+                else if (role == Messages.Expert)
+                {
+                    user = _context.Experts.Find(id);
+                }
+                if (user != null)
+                {
+                    _context.Remove(user);
                     _context.SaveChanges();
                 }
                 result = Redirect("~/Home/Profile");
@@ -191,6 +219,7 @@ namespace ExpertTool.Controllers
             }
             return result;
         }
+
         [HttpGet]
         public IActionResult Person(int? id)
         {
