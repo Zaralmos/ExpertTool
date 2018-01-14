@@ -6,51 +6,6 @@
     ViewData["Title"] = "Личный кабинет";
 }
 
-
-@if (ViewBag.User is Admin)
-{
-
-    <div class="block">
-        <div class="block-title">
-            Панель администратора
-        </div>
-        <div class="block-content admin-panel">
-            <p>
-                Нажмите
-                <a href="~/Home/Person">
-                    <input type="button" value="Добавить персону">
-                </a>
-                , чтобы добавить новую персону для экспертной оценки.
-            </p>
-            <p>
-                Чтобы посмотреть список всех персон, вынесенных на рассмотрение экспертам, перейдите на главную страницу или нажмите
-                <a href="~/Home/Index">
-                    <input type="button" value="Список персон">
-                </a>
-            </p>
-            <hr>
-            <p>
-                Для того чтобы зарегистрировать нового эксперта, нажмите
-                <a href="~/Home/Register?role=Expert">
-                    <input type="button" value="Зарегистрировать эксперта">
-                </a>
-            </p>
-            <p>
-                Чтобы создать ещё одну учётную запись администратора, нажмите
-                <a href="~/Home/Register?role=Admin">
-                    <input type="button" value="Зарегистрировать администратора">
-                </a>
-            </p>
-            <p>
-                Чтобы посмотреть список всех зарегистрированных пользователей, нажмите
-                <a href="~/Home/Users">
-                    <input type="button" value="Список пользователей">
-                </a>
-            </p>
-        </div>
-    </div>
-}
-
 <div class="block">
     <div class="block-title">
         Персональные данные
@@ -66,32 +21,112 @@
             <span class="success">@ViewBag.Success</span>
             <hr>
         }
-        <form method="post">
-            ФИО<br />
-            <input type="text" name="Name" value="@ViewBag.User?.Name" /><br />
-            Должность и место работы<br />
-            <input type="text" name="Position" value="@ViewBag.User?.Position" /><br />
-            Дата рождения<br />
-            <input type="date" name="Birthday" value="@ExpertTool.Views.DateTimeExtensions.ToHtmlDateFormat(ViewBag.User?.Birthday)" /><br />
-            Телефон <br />
-            <input type="tel" name="Phone" value="@ViewBag.User?.Phone" /><br />
-            E-mail <br />
-            <text>@ViewBag.User?.Email</text><br />
-            @if (ViewBag.User is Expert)
-            {
-                <text> Для того, чтобы поменять пароль, свяжитесь с администратором. (@ViewBag.User?.Admin?.Phone) </text> <br>
-            }
-            <input type="submit" value="Сохранить">
-            <input type="reset" value="Сбросить">
-        </form>
+        @Html.Partial("Partial/UserForm")
+    </div>
+</div>
+
+@if (ViewBag.User is Admin)
+{
+<div class="block">
+    <div class="block-title">
+        Персоны
+    </div>
+    <div class="block-content">
+        <a href="~/Home/Person">
+            <input type="button" value="Добавить персону">
+        </a>
     </div>
 </div>
 
 <div class="block">
+    <div class="block-title">
+        <text>Experts</text>
+    </div>
     <div class="block-content">
-        Выход из аккаунта происходит автоматически после окончания сессии. Чтобы выйти принудительно, нажмите
-        <a href="~/Home/DeAuth">
-            <input type="button" value="Выйти">
-        </a>
+        @if (ViewBag.Experts != null)
+        {
+            <table class="equal-width-cols">
+                <thead>
+                    <tr>
+                        <th>Имя</th>
+                        <th>Должность</th>
+                        <th>E-mail</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (Expert exp in ViewBag.Experts)
+                {
+                    <tr>
+                        <td>@exp.Name</td>
+                        <td>@exp.Position</td>
+                        <td>@exp.Email</td>
+                        <td>
+                            @Html.ActionLink("Изменить", "RegisteredUser", "Home", new { role = "Expert", id = exp.Id }, null)|
+                            @Html.ActionLink("Удалить", "DeleteUser", "Home", new { role = "Expert", id = exp.Id }, null)
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+           <a href="@Url.Action("Register", "Home", new { role = "Expert"})">
+               <input type="button" value="Добавить" />
+           </a>
+        }
+        else
+        {
+            <text>@ViewBag.ExpertError</text>
+        }
     </div>
 </div>
+
+<div class="block">
+        <div class="block-title">
+             <text>Админы</text>
+        </div>
+    <div class="block-content">
+        @if (ViewBag.Admins != null)
+    {
+        <table class="equal-width-cols">
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Должность</th>
+                    <th>E-mail</th>
+                    <th></th>
+                </tr>
+            <tbody>
+                @foreach (Admin admin in ViewBag.Admins)
+            {
+                <tr>
+                    <td>@admin.Name</td>
+                    <td>@admin.Position</td>
+                    <td>@admin.Email</td>
+                    <td>
+                        @Html.ActionLink("Изменить", "RegisteredUser", "Home", new { role = "Admin", id = admin.Id }, null)|
+                        @Html.ActionLink("Удаить", "DeleteUser", "Home", new { role = "Admin", id = admin.Id }, null)
+                    </td>
+                </tr>
+        }
+            </tbody>
+        </table>
+        <a href="@Url.Action("Register", "Home", new { role = "Admin"})">
+            <input type="button" value="Добавить" />
+        </a>
+}
+else
+{
+    <text>@ViewBag.AdminError</text>
+}
+    </div>
+</div>
+ }
+
+        <div class="block">
+            <div class="block-content">
+                Выход из аккаунта происходит автоматически после окончания сессии. Чтобы выйти принудительно, нажмите
+                <a href="~/Home/DeAuth">
+                    <input type="button" value="Выйти">
+                </a>
+            </div>
+        </div>
