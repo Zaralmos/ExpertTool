@@ -189,6 +189,7 @@ namespace ExpertTool.Controllers
                 {
                     dbUser.Update(user);
                 }
+                _context.SaveChanges();
                 result = Redirect("~/Home/Profile");
             }
             else
