@@ -90,7 +90,8 @@
                                    class="slider">
                             @EvaluationExtensions.GetRussianPropertyName(i)
                             <div class="percent">
-                            %</div>
+                                @ViewBag.Conclusion?.Values[i]%
+                                                    </div>
                         </div>
                     }
                 </div>
