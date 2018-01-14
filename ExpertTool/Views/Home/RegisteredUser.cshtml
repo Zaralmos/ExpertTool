@@ -3,5 +3,13 @@
 *@
 @{
     ViewData["Title"] = "Личный кабинет";
+}
+<div class="block">
+    <div class="block-title">
+        Персональные данные
+    </div>
+    <div class="block-content">
+        @Html.Partial("Partial/UserForm")
+    </div>
+</div>
 
-    @Html.Partial("Partial/UserForm")}
