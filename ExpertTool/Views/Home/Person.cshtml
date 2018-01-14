@@ -17,12 +17,15 @@
                 <div class="birthday">Дата рождения: @ViewBag.Person?.Birthday.ToShortDateString()</div>
                 <hr>
                 <p>
-                    @foreach (string paragraph in ViewBag.Person.Biography.Split('\n'))
-                    {
-                    <p>
-                        @paragraph
-                    </p>
-                }
+                   @if (ViewBag.Person.Biography != null)
+                   {
+                       @foreach (string paragraph in ViewBag.Person.Biography.Split('\n'))
+                        {
+                        <p>
+                            @paragraph
+                        </p>
+                           }
+                   }
                     </p>
                     <div class="published">@ViewBag.Person?.Published.ToShortDateString()</div>
                 </div>
@@ -76,10 +79,18 @@
                 <div class="scales">
                     @for (int i = 0; i < 10; i++)
                     {
-                        <div class="scale">
-                            <input type="range" min="0" max="100" size="4" required name="@EvaluationExtensions.GetPropertyname(i)" value="@ViewBag.Conclusion?.Values[i]">
+                        <div class="scale" id="@i">
+                            <input onmousemove="ChangeValue(event);"
+                                   onchange="ChangeValue(event);"
+                                   onload="ChangeValue(event);"                                  
+                                   onmousedown="ChangeValue(event);"
+                                   type="range" min="0" 
+                                   max="100" size="4" required name="@EvaluationExtensions.GetPropertyname(i)" 
+                                   value="@ViewBag.Conclusion?.Values[i]"
+                                   class="slider">
                             @EvaluationExtensions.GetRussianPropertyName(i)
-                            <div class="percent">@ViewBag.Conclusion?.Values[i] %</div>
+                            <div class="percent">
+                            %</div>
                         </div>
                     }
                 </div>
@@ -92,6 +103,16 @@
             </form>
         </div>
     </div>
+    <script>
+        function ChangeValue(event) { // такое себе. Надо исправить
+            var id = event.target.parentElement.id;
+            var value = event.target.value;
+            var text = $("#" + String(id)).children(".percent").first();
+                text.text(String(value) + "%");
+        };
+
+
+    </script>
 }
 else if (ViewBag.User is Admin && ViewBag.Person != null)
 {
@@ -120,29 +141,29 @@ else if (ViewBag.User is Admin && ViewBag.Person != null)
 
     if (ViewBag.Conclusions != null && (ViewBag.Conclusions as IEnumerable<Conclusion>).Any(cion => !string.IsNullOrWhiteSpace(cion.Comment)))
     {
-    <div class="block">
-        <div class="block-title">
-            Комментарии экспертов
-        </div>
-        <div class="block-content">
-            <ul>
-                @foreach (Conclusion conclusion in ViewBag.Conclusions)
-                {
-                    if (!string.IsNullOrWhiteSpace(conclusion.Comment))
+        <div class="block">
+            <div class="block-title">
+                Комментарии экспертов
+            </div>
+            <div class="block-content">
+                <ul>
+                    @foreach (Conclusion conclusion in ViewBag.Conclusions)
                     {
-                        <li>
-                            <h2 class="name">@conclusion.Expert.Name</h2>
-                            @foreach (string paragraph in conclusion.Comment.Split('\n'))
-                            {
-                                <p>
-                                    @paragraph
-                                </p>
-                            }
-                        </li>
+                        if (!string.IsNullOrWhiteSpace(conclusion.Comment))
+                        {
+                            <li>
+                                <h2 class="name">@conclusion.Expert.Name</h2>
+                                @foreach (string paragraph in conclusion.Comment.Split('\n'))
+                                {
+                                    <p>
+                                        @paragraph
+                                    </p>
+                                }
+                            </li>
+                        }
                     }
-                }
-            </ul>
+                </ul>
+            </div>
         </div>
-    </div>
     }
 }
