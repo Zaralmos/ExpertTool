@@ -32,6 +32,7 @@
         Персоны
     </div>
     <div class="block-content">
+        Чтобы добавить новую персону для получения экспертной оценки нажмите кнопку.<br>
         <a href="~/Home/Person">
             <input type="button" value="Добавить персону">
         </a>
@@ -45,7 +46,7 @@
     <div class="block-content">
         @if (ViewBag.Experts != null)
         {
-            <table class="equal-width-cols">
+            <table>
                 <thead>
                     <tr>
                         <th>Имя</th>
@@ -62,8 +63,13 @@
                         <td>@exp.Position</td>
                         <td>@exp.Email</td>
                         <td>
-                            @Html.ActionLink("Изменить", "RegisteredUser", "Home", new { role = "Expert", id = exp.Id }, null)|
-                            @Html.ActionLink("Удалить", "DeleteUser", "Home", new { role = "Expert", id = exp.Id }, null)
+                            <a class="text-link" href="@Url.Action("RegisteredUser", "Home", new { role = "Expert", id = exp.Id })">
+                                Изменить
+                            </a>
+                            <br />
+                            <a class="text-link" href="@Url.Action("DeleteUser", "Home", new { role = "Expert", id = exp.Id })">
+                                Удалить
+                            </a>
                         </td>
                     </tr>
                 }
@@ -87,7 +93,7 @@
     <div class="block-content">
         @if (ViewBag.Admins != null)
     {
-        <table class="equal-width-cols">
+        <table>
             <thead>
                 <tr>
                     <th>Имя</th>
@@ -95,6 +101,7 @@
                     <th>E-mail</th>
                     <th></th>
                 </tr>
+            </thead>
             <tbody>
                 @foreach (Admin admin in ViewBag.Admins)
             {
@@ -103,9 +110,14 @@
                     <td>@admin.Position</td>
                     <td>@admin.Email</td>
                     <td>
-                        @Html.ActionLink("Изменить", "RegisteredUser", "Home", new { role = "Admin", id = admin.Id }, null)|
-                        @Html.ActionLink("Удаить", "DeleteUser", "Home", new { role = "Admin", id = admin.Id }, null)
-                    </td>
+                        <a class="text-link" href="@Url.Action( "RegisteredUser", "Home", new { role = "Admin", id = admin.Id })">
+                            Изменить
+                        </a>
+                        <br />
+                        <a class="text-link" href="@Url.Action("DeleteUser", "Home", new { role = "Admin", id = admin.Id })">
+                            Удалить
+                        </a>
+                    </td>                   
                 </tr>
         }
             </tbody>
@@ -122,11 +134,11 @@ else
 </div>
  }
 
-        <div class="block">
-            <div class="block-content">
-                Выход из аккаунта происходит автоматически после окончания сессии. Чтобы выйти принудительно, нажмите
-                <a href="~/Home/DeAuth">
-                    <input type="button" value="Выйти">
-                </a>
-            </div>
-        </div>
+<div class="block">
+    <div class="block-content">
+        Выход из аккаунта происходит автоматически после окончания сессии. Для принудительного выхода нажмите кнопку. <br>
+        <a href="~/Home/DeAuth">
+            <input type="button" value="Выйти">
+        </a>
+    </div>
+</div>

@@ -5,7 +5,7 @@ html {
 
 body {
     max-width: 1300px;
-    min-width: 700px;
+    min-width: 400px;
     margin: auto;
 }
 
@@ -84,15 +84,15 @@ footer {
     vertical-align: middle;
 }
 
-    .bunner > * {
-        display: inline-block;
-        vertical-align: middle;
-    }
+.bunner > * {
+    display: inline-block;
+    vertical-align: middle;
+}
 
-    .bunner > img {
-        margin: 15px;
-        max-height: 110px;
-    }
+.bunner > img {
+    margin: 15px;
+    max-height: 110px;
+}
 
 .bunner-title {
     margin: 10px 20px;
@@ -138,10 +138,10 @@ margin-top: 0px;
     margin-bottom: 10px; 
 }
 
-.person > a:hover {
+/*.person > a:hover {
     color: #00cfc2;
     text-decoration: underline;
-}
+}*/
 
 .name {
     margin: 0;
@@ -172,26 +172,6 @@ margin-top: 0px;
 
 input, textarea {
     font-size: 20px;
-}
-
-table {
-    width: 100%;
-    border: 1px;
-    border-spacing: 1px;
-}
-
-td, th{
-     border: 1px solid #00cfc2;
-     text-align: center;
-}
-
-.equal-width-cols {
-    width: 100%;
-    table-layout: fixed;
-}
-
-.equal-width-cols td {
-    width: 100%;
 }
 
 input[type="range"] {

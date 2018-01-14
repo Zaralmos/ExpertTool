@@ -60,6 +60,13 @@ namespace ExpertTool.Controllers
             _context.SaveChanges();
             ViewBag.Success = Messages.Success;
             ViewBag.User = AuthorizedUser;
+            if (AuthorizedUser is Admin)
+            {
+                ViewBag.AdminError = Messages.AdminsNotFound;
+                ViewBag.ExpertsError = Messages.ExpertsNotFound;
+                ViewBag.Admins = _context.Admins.ToList();
+                ViewBag.Experts = _context.Experts.ToList();
+            }
             return View();
         }
 
