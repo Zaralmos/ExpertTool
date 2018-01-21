@@ -12,21 +12,137 @@
             <div class="person-detailed">
                 <h2 class="name">
                     @ViewBag.Person?.Name
+                    <img src="@ViewBag.Person?.Photo" />
                 </h2>
                 <div class="position">Должность: @ViewBag.Person?.Position</div>
                 <div class="birthday">Дата рождения: @ViewBag.Person?.Birthday.ToShortDateString()</div>
                 <hr>
+                
                 <p>
-                   @if (ViewBag.Person.Biography != null)
+                    <div class="block-title">
+                        Публикации
+                    </div>
+                    <div class="block-content">
+                   @if (ViewBag.Person.Publish != null)
                    {
-                       @foreach (string paragraph in ViewBag.Person.Biography.Split('\n'))
+                       @foreach (string paragraph in ViewBag.Person.Publish.Split('\n'))
                         {
                         <p>
                             @paragraph
                         </p>
                            }
                    }
-                    </p>
+                   </div>
+                </p>
+                
+                <p>
+                    <div class="block-title">
+                        Видео
+                    </div>
+                    <div class="block-content">
+                    @if(ViewBag.Person.Video != null)
+                    {
+                        @foreach(string vid in ViewBag.Person.Video.Split("\n"))
+                        {
+                           
+                            @if (vid != null)
+                            {
+                                 <p><a href="@vid.Substring(0, vid.LastIndexOf('/'))">@vid.Substring(vid.LastIndexOf('/'))</a></p>
+                            }
+                         }
+
+                    }
+                    </div>
+                </p>
+                <p>
+                    <div class="block-title">
+                        Биография
+                    </div>
+                    <div class="block-content">
+                    @if(ViewBag.Person.Biography != null)
+                    {
+                        @foreach(string paragraph in ViewBag.Person.Biography.Split("\n"))
+                        {
+                            <p>
+                                @paragraph
+                            </p>
+                         }
+
+                    }
+                    </div>
+                </p>
+                 <p>
+                     <div class="block-title">
+                         Публикации
+                     </div>
+                     <div class="block-content">
+                    @if(ViewBag.Person.Career != null)
+                    {
+                        @foreach(string paragraph in ViewBag.Person.Career.Split("\n"))
+                        {
+                            <p>
+                                @paragraph
+                            </p>
+                         }
+
+                    }
+                    </div>
+                </p>
+                <p>
+                    <div class="block-title">
+                        Религиозные взгляды
+                    </div>
+                    <div class="block-content">
+                    @if(ViewBag.Person.ReligiousViews != null)
+                    {
+                        @foreach(string paragraph in ViewBag.Person.ReligiousViews.Split("\n"))
+                        {
+                             <p>
+                                @paragraph
+                            </p>
+                         }
+
+                    }
+                    </div>
+                </p>
+                 <p>
+                     <div class="block-title">
+                         Цитаты
+                     </div>
+                     <div class="block-content">
+                    @if(ViewBag.Person.Quotations != null)
+                    {
+                        @foreach(string paragraph in ViewBag.Person.Quotations.Split("\n"))
+                        {
+                            <p>
+                                @paragraph
+                            </p>
+                         }
+
+                    }
+                    </div>
+                </p>
+                <p>
+                    <div class="block-title">
+                        Общественная деятельность
+                    </div>
+                    <div class="block-content">
+                    @if(ViewBag.Person.SocialActivity != null)
+                    {
+                        @foreach(string paragraph in ViewBag.Person.SocialActivity.Split("\n"))
+                        {
+                            <p>
+                                @paragraph
+                            </p>
+                         }
+
+                    }
+                    </div>
+                </p>
+
+
+
+
                     <div class="published">@ViewBag.Person?.Published.ToShortDateString()</div>
                 </div>
             </div>
@@ -49,21 +165,35 @@
                     <span class="success">@ViewBag.Success</span>
                     <hr>
                 }
-                <form method="post">
-                    <input type="number" name="Id" value="@ViewBag.Person?.Id" hidden />
-                    ФИО <br>
-                    <input type="text" name="Name" value="@ViewBag.Person?.Name" />
-                    Должность<br>
-                    <input type="text" name="Position" value="@ViewBag.Person?.Position" />
-                    Дата рождения<br>
-                    <input type="date" name="Birthday" value="@DateTimeExtensions.ToHtmlDateFormat(ViewBag.Person?.Birthday)" />
-                    <hr>
-                    Биография
-                    <textarea name="Biography">@ViewBag.Person?.Biography</textarea>
-                    <div class="published">@ViewBag.Person?.Published.ToShortDateString()</div>
-                    <input type="submit" value="Сохранить">
-                    <input type="reset" value="Сбросить">
-                </form>
+                    <form method="post">
+                        <input type="number" name="Id" value="@ViewBag.Person?.Id" hidden />
+                        ФИО <br>
+                        <input type="text" name="Name" value="@ViewBag.Person?.Name" />
+                        Должность<br>
+                        <input type="text" name="Position" value="@ViewBag.Person?.Position" />
+                        Дата рождения<br>
+                        <input type="date" name="Birthday" value="@DateTimeExtensions.ToHtmlDateFormat(ViewBag.Person?.Birthday)" />
+                        <hr>
+                        Фото
+                        <textarea name="Photo">@ViewBag.Person?.Photo</textarea>
+                        Публикации
+                        <textarea name="Publish">@ViewBag.Person?.Publish</textarea>
+                        Видео
+                        <textarea name="Video">@ViewBag.Person?.Video</textarea>
+                        Биография
+                        <textarea name="Biography">@ViewBag.Person?.Biography</textarea>
+                        Карьера
+                        <textarea name="Career">@ViewBag.Person?.Career</textarea>
+                        Религиозные взгляды
+                        <textarea name="ReligiousViews">@ViewBag.Person?.ReligiousViews</textarea>
+                        Цитаты
+                        <textarea name="Quotations">@ViewBag.Person?.Quotations</textarea>
+                        Общественная активность
+                        <textarea name="SocialActivity">@ViewBag.Person?.SocialActivity</textarea>
+                        <div class="published">@ViewBag.Person?.Published.ToShortDateString()</div>
+                        <input type="submit" value="Сохранить">
+                        <input type="reset" value="Сбросить">
+                    </form>
             </div>
         </div>
     }

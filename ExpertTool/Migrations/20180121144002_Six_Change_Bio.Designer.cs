@@ -11,9 +11,10 @@ using System;
 namespace ExpertTool.Migrations
 {
     [DbContext(typeof(EtContext))]
-    partial class EtContextModelSnapshot : ModelSnapshot
+    [Migration("20180121144002_Six_Change_Bio")]
+    partial class Six_Change_Bio
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
