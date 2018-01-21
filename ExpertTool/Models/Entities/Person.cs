@@ -28,7 +28,25 @@ namespace ExpertTool.Models
         [MaxLength(1000, ErrorMessage = "Слишком длинное описание")]
         public string ShortInfo { get; set; }
 
+        #region Bio
+
+        public string Photo { get; set; }
+
+        public string Publish { get; set; }
+
+        public string Video { get; set; }
+
         public string Biography { get; set; }
+
+        public string Career { get; set; }
+
+        public string ReligiousViews { get; set; }
+
+        public string Quotations { get; set; }
+
+        public string SocialActivity { get; set; }
+
+        #endregion
 
         public int AdminId { get; set; }
         public virtual Admin Admin { get; set; }
@@ -43,7 +61,14 @@ namespace ExpertTool.Models
                 Name = source.Name;
             Birthday = source.Birthday;
             Position = source.Position;
+            Photo = source.Photo;
+            Publish = source.Publish;
+            Video = source.Video;
             Biography = source.Biography;
+            Career = source.Career;
+            ReligiousViews = source.ReligiousViews;
+            Quotations = source.Quotations;
+            SocialActivity = source.SocialActivity;
         }
     }
 }
